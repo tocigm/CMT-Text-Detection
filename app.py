@@ -80,11 +80,13 @@ def detectCracks(inputImg):
     text_lines = text_detector.detect(img)
 
     print text_lines
+    scores = []
     for line in text_lines:
         x1, y1, x3, y3, score = line
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
         print cnt
-        cv2.drawContours(img, [cnt], -1, (255, 0, 123), 3)
+        cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
+        scores.append(score)
     cv2.imwrite(annotatedImgPath, img)
 
     has_phone = True
@@ -93,7 +95,7 @@ def detectCracks(inputImg):
     if has_phone:
         result['hasPhone'] = True
         result['hasCracked'] = True
-        result['crack_accuracy'] = 99.99
+        result['crack_accuracy'] = str(np.mean(np.array(scores)) * 100)[:6]
         result['cracked'] = annotatedImgPath.split("/")[-1]
 
     else:
@@ -101,18 +103,9 @@ def detectCracks(inputImg):
 
     return jsonify(result)
 
-def detect_phone(img):
-    pass
 
-def detect_crack(annotatedImgPath, img, input_image):
-    #
-    # cv2.imwrite(annotatedImgPath, img)
-    #
-    # positive_detections = detections[np.where(detections > threshold)]
-    # accuracy = np.mean(positive_detections) if positive_detections.size > 0 else 1
-    #
-    # return hasCracked, accuracy
-    pass
+
+
 
 if __name__ ==  '__main__':
   app.run(host='0.0.0.0', port=5000)
