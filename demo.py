@@ -19,13 +19,13 @@
 #
 
 from cfg import Config as cfg
-from other import draw_boxes, resize_im, CaffeModel
+from CTPN.other import draw_boxes, resize_im, CaffeModel
 import cv2, os, caffe, sys
-from detectors import TextProposalDetector, TextDetector
+from CTPN.detectors import TextProposalDetector, TextDetector
 import os.path as osp
-from utils.timer import Timer
+from CTPN.utils.timer import Timer
 
-DEMO_IMAGE_DIR="demo_images/"
+DEMO_IMAGE_DIR="upload/"
 NET_DEF_FILE="models/deploy.prototxt"
 MODEL_FILE="models/ctpn_trained_model.caffemodel"
 

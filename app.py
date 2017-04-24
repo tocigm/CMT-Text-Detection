@@ -9,11 +9,25 @@ import numpy as np
 import caffe
 import cv2
 
+from cfg import Config as cfg
+from CTPN.other import draw_boxes, resize_im, CaffeModel
+import cv2, os, caffe, sys
+from CTPN.detectors import TextProposalDetector, TextDetector
+from CTPN.utils.timer import Timer
+import os.path as osp
+
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
 app = Flask(__name__, static_path='/static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+NET_DEF_FILE="models/deploy.prototxt"
+MODEL_FILE="models/ctpn_trained_model.caffemodel"
+
 caffe.set_mode_gpu()
+# initialize the detectors
+text_proposals_detector=TextProposalDetector(CaffeModel(NET_DEF_FILE, MODEL_FILE))
+text_detector=TextDetector(text_proposals_detector)
+
 
 @app.route("/")
 def index():
