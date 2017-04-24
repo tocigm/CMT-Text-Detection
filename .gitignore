@@ -69,6 +69,6 @@ dataset/
 static/bower_components/
 .idea/
 .idea/
-upload/
+#upload/
 logs/
 .ipynb_checkpoints/
