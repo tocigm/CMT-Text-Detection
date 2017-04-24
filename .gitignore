@@ -70,7 +70,5 @@ static/bower_components/
 .idea/
 .idea/
 upload/
-patch/patches/patch/img/
 logs/
-patch/patches/
 .ipynb_checkpoints/

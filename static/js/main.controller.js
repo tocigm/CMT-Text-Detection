@@ -55,7 +55,7 @@ function MainCtr($scope, Item, Upload, $timeout){
 
         $scope.file = file
         file.upload = Upload.upload({
-            url: 'http://52.207.235.228/upload',  //http://demo7177.cloudapp.net/upload
+            url: 'http://54.86.49.120/upload',  //http://demo7177.cloudapp.net/upload
             data: {file: file}
         })
         file.upload.then(function (response) {
