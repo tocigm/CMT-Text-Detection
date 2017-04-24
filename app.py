@@ -87,7 +87,7 @@ def detectCracks(inputImg):
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
 
         cropped = img.copy()[y1:y3, x1:x3]
-        name = os.getcwd() + "/upload/"+str(random.randint(10000))+inputImg
+        name = os.getcwd() + "/upload/"+str(random.randint(1,10000))+inputImg
         cv2.imwrite(name, cropped)
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
