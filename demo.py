@@ -24,6 +24,7 @@ import cv2, os, caffe, sys
 from CTPN.detectors import TextProposalDetector, TextDetector
 import os.path as osp
 from CTPN.utils.timer import Timer
+import numpy as np
 
 DEMO_IMAGE_DIR="upload/"
 NET_DEF_FILE="models/deploy.prototxt"
@@ -59,6 +60,11 @@ for im_name in demo_imnames:
 
     print text_lines
 
+    for line in text_lines:
+        x1, y1, x3, y3, score = line
+        cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
+        print cnt
+        cv2.drawContours(im, [cnt], -1 , (255, 0, 123), 3)
     #im_with_text_lines=draw_boxes(im, text_lines, caption=im_name, wait=False)
 
 print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
