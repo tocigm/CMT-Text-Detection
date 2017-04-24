@@ -74,8 +74,12 @@ def detectCracks(inputImg):
     # Load the input image into a numpy array and display it
     input_image = caffe.io.load_image(originalImgPath)
     img = cv2.imread(originalImgPath)
-    # Todo: fake
-    cv2.imwrite(annotatedImgPath, img)
+
+
+    img, f = resize_im(img, cfg.SCALE, cfg.MAX_SCALE)
+    text_lines = text_detector.detect(img)
+
+    print text_lines
 
 
     has_phone = True
