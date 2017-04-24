@@ -1,0 +1,54 @@
+<div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Cracks Detection
+                    <small>@motionscloud</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-2">
+                    <button class="btn btn-upload" ngf-select="uploadPic($file)" ng-model="picFile"
+                         accept="image/*" > <!-- ngf-max-height="1000" ngf-max-size="2MB">-->
+                  Select Image</button>
+                </div>
+
+            </div>
+
+            <div class="row" align="middle">
+                <img ngf-thumbnail="picFile" class="input-image vcenter" >
+            </div>
+        </div>
+
+        <div class="col-md-6" ng-if="item.hasPhone == true">
+            <div class="row">
+                <div class="search">
+                    <h4>{{item.hasCracked == true ? "Cracked with confidence level of " +
+                        item.crack_accuracy + "%" : "phone without crack"}}</h4>
+                </div>
+            </div>
+
+            <div class="row" >
+                <img style="width: 300px; height: 300px" ng-src = "http://52.207.235.228/pic/{{item.cracked}}">
+            </div>
+
+        </div>
+
+        <div class="col-md-6" ng-if="item.hasPhone == false">
+            <div class="row">
+                <div class="search">
+                    <h4>Result: no phone screen is detected !</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+</div>
