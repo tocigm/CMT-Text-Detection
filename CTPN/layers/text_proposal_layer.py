@@ -1,7 +1,7 @@
 import numpy as np
 import yaml, caffe
-from other import clip_boxes
-from anchor import AnchorText
+from CTPN.other import clip_boxes
+from CTPN.anchor import AnchorText
 
 
 class ProposalLayer(caffe.Layer):
