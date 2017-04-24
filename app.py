@@ -15,6 +15,7 @@ import cv2, os, caffe, sys
 from CTPN.detectors import TextProposalDetector, TextDetector
 from CTPN.utils.timer import Timer
 import os.path as osp
+import random
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
@@ -86,7 +87,7 @@ def detectCracks(inputImg):
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
 
         cropped = img.copy()[y1:y3, x1:x3]
-        name = os.getcwd() + "/upload/"+str(x1)[:3]+inputImg
+        name = os.getcwd() + "/upload/"+str(random.randint(10000))+inputImg
         cv2.imwrite(name, cropped)
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
