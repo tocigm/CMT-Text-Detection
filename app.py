@@ -91,3 +91,5 @@ def detect_crack(annotatedImgPath, img, input_image):
     # return hasCracked, accuracy
     pass
 
+if __name__ ==  '__main__':
+  app.run(host='0.0.0.0', port=5000)
