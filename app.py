@@ -84,9 +84,14 @@ def detectCracks(inputImg):
     for line in text_lines:
         x1, y1, x3, y3, score = line
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
-        print cnt
+
+        cropped = img.copy()[y1:y3, x1:x3]
+        name = os.getcwd() + "/upload/"+str(x1)[:3]+input_image
+        cv2.imwrite(name, cropped)
+
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
+
     cv2.imwrite(annotatedImgPath, img)
 
     has_phone = True
