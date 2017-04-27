@@ -230,7 +230,6 @@ def classify(caffemodel, deploy_file, image_files,
 
 
 if __name__ == '__main__':
-    script_start_time = time.time()
 
     # parser = argparse.ArgumentParser(description='Classification example - DIGITS')
     #
@@ -248,15 +247,17 @@ if __name__ == '__main__':
     # args = vars(parser.parse_args())
 
     BASE = "/home/ubuntu/CMT-Text-Detection/"
+    IMG_FOLDER = BASE + "/Digits/crop/"
+    imgs = []
+    for i in imgs:
+        imgs.append(os.path.join(IMG_FOLDER, i))
 
     classify(
-        BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel", # args['caffemodel'],
-        BASE + "/models/digit/mnist_model/deploy.prototxt",# args['deploy_file'],
-        [BASE + "/Digits/crop/259_2.jpg"],# args['image_file'],
-        BASE + "/models/digit/mnist_data/mean.binaryproto",# args['mean'],
-        BASE + "/models/digit/mnist_data/labels.txt",# args['labels'],
-        1, # args['batch_size'],
-        True # not args['nogpu'],
+        BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
+        BASE + "/models/digit/mnist_model/deploy.prototxt",                 # args['deploy_file'],
+        imgs,                                  # args['image_file'],
+        BASE + "/models/digit/mnist_data/mean.binaryproto",                 # args['mean'],
+        BASE + "/models/digit/mnist_data/labels.txt",                       # args['labels'],
+        1,                                                                  # args['batch_size'],
+        True                                                                # not args['nogpu'],
     )
-
-    print 'Script took %f seconds.' % (time.time() - script_start_time,)
