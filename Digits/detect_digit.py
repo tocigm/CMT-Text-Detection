@@ -114,6 +114,7 @@ def recognize_CMT_number (img_path):
         1,  # args['batch_size'],
         True  # not args['nogpu'],
     )
+    return result
 
 
 # recognize_CMT_number(FILE)
