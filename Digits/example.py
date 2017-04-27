@@ -249,8 +249,10 @@ if __name__ == '__main__':
     BASE = "/home/ubuntu/CMT-Text-Detection/"
     IMG_FOLDER = BASE + "/Digits/crop/"
     imgs = []
-    for i in imgs:
+    for i in IMG_FOLDER:
         imgs.append(os.path.join(IMG_FOLDER, i))
+
+    print imgs
 
     classify(
         BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
