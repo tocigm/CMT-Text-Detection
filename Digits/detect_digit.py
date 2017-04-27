@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
-
+import os
+from Digits.example import classify
 #BASE = "/Users/kidio/git/bagiks/CMT-Text-Detection/"
-BASE = "/home/ubuntuCMT-Text-Detection/"
+BASE = "/home/ubuntu/CMT-Text-Detection/"
 
-'''
 def extract_digits(img, path):
     abc = img.copy()
     abc = cv2.bitwise_not(abc)
@@ -83,54 +83,35 @@ def xxx(path):
     kernel = np.ones((2, 2), np.uint8)
     # abc = cv2.morphologyEx(abc, cv2.MORPH_OPEN, kernel)
     foreground = cv2.dilate(foreground, kernel, iterations=1)
+    save_path = "/Users/kidio/git/bagiks/CMT-Text-Detection/Digits/crop/"+ path.split("/")[-1].split(".")[0]
+    if not os.path.isdir(save_path):
+        os.mkdir(save_path)
+    extract_digits(foreground, save_path)
 
-    extract_digits(foreground, "/Users/kidio/git/bagiks/CMT-Text-Detection/Digits/crop/")
+    return save_path
 
 
 
+FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
-
-
-xxx(BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg")
+saved_path = xxx(FILE)
 # xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
 
-'''
 
-MODEL_JOB_NUM = 'mnist_model'  ## Remember to set this to be the job number for your model
-DATASET_JOB_NUM = 'mnist_data'  ## Remember to set this to be the job number for your dataset
+BASE = "/home/ubuntu/CMT-Text-Detection/"
+IMG_FOLDER = saved_path
+imgs = []
+for i in os.listdir(IMG_FOLDER):
+    imgs.append(os.path.join(IMG_FOLDER, i))
 
-MODEL_FILE = BASE + '/models/digit/' + MODEL_JOB_NUM + '/deploy.prototxt'  # Do not change
-PRETRAINED = BASE + '/models/digit/' + MODEL_JOB_NUM + '/snapshot_iter_21120.caffemodel'  # Do not change
-MEAN_IMAGE = BASE + '/models/digit/' + DATASET_JOB_NUM + '/mean.jpg'  # Do not change
+result = classify(
+    BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
+    BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
+    imgs,  # args['image_file'],
+    BASE + "/models/digit/mnist_data/mean.binaryproto",  # args['mean'],
+    BASE + "/models/digit/mnist_data/labels.txt",  # args['labels'],
+    1,  # args['batch_size'],
+    True  # not args['nogpu'],
+)
 
-# load the mean image
-import caffe
-mean_image = caffe.io.load_image(MEAN_IMAGE, color=False)
-
-caffe.set_mode_gpu()
-
-phone_net = caffe.Classifier(MODEL_FILE, PRETRAINED,
-                             image_dims=(28, 28))
-
-
-
-def detect_phone(input_image):
-    grid_square = resize(input_image)
-    grid_square = np.expand_dims(grid_square, axis=2)
-    # subtract the mean image
-    grid_square -= mean_image
-    # make prediction
-    prediction = phone_net.predict([grid_square])
-    return prediction[0].argmax() > 0
-
-def resize(img):
-    # cvt_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # return cv2.resize(cvt_img, (28, 28), interpolation=cv2.INTER_LINEAR)
-    return caffe.io.resize(img, (28,28,1))
-
-
-
-input_image = caffe.io.load_image(BASE+"/Digits/crop/193_4.jpg", color=False)
-print detect_phone(input_image)
-
-
+print result
