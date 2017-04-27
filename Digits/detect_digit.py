@@ -2,11 +2,11 @@ import cv2
 import numpy as np
 import os
 from Digits.example import classify
-#BASE = "/Users/kidio/git/bagiks/CMT-Text-Detection/"
+
 BASE = "/home/ubuntu/CMT-Text-Detection/"
 
-def xxx(path):
-    img = cv2.imread(path)
+def remove_noise(img_path):
+    img = cv2.imread(img_path)
 
     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -46,15 +46,16 @@ def xxx(path):
     kernel = np.ones((2, 2), np.uint8)
     # abc = cv2.morphologyEx(abc, cv2.MORPH_OPEN, kernel)
     foreground = cv2.dilate(foreground, kernel, iterations=1)
-    save_path = BASE+ "/Digits/crop/"+ path.split("/")[-1][:-4]
+    save_path = BASE+ "/Digits/crop/" + img_path.split("/")[-1][:-4]
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
-    extract_digits(foreground, save_path)
+
+    split_digits(foreground, save_path)
 
     return save_path
 
 
-def extract_digits(img, path):
+def split_digits(img, path):
     abc = img.copy()
     abc = cv2.bitwise_not(abc)
     x, y = abc.shape
@@ -94,25 +95,27 @@ def extract_digits(img, path):
 
 FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
-saved_path = xxx(FILE)
-# xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
+def recognize_CMT_number (img_path):
+    saved_path = remove_noise(img_path)
+    # xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
 
 
-BASE = "/home/ubuntu/CMT-Text-Detection/"
-IMG_FOLDER = saved_path
-print saved_path
-imgs = []
-for i in os.listdir(IMG_FOLDER):
-    imgs.append(os.path.join(IMG_FOLDER, i))
+    IMG_FOLDER = saved_path
+    imgs = []
+    for i in os.listdir(IMG_FOLDER):
+        imgs.append(os.path.join(IMG_FOLDER, i))
 
-result = classify(
-    BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
-    BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
-    imgs,  # args['image_file'],
-    BASE + "/models/digit/mnist_data/mean.binaryproto",  # args['mean'],
-    BASE + "/models/digit/mnist_data/labels.txt",  # args['labels'],
-    1,  # args['batch_size'],
-    True  # not args['nogpu'],
-)
+    result = classify(
+        BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
+        BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
+        imgs,  # args['image_file'],
+        BASE + "/models/digit/mnist_data/mean.binaryproto",  # args['mean'],
+        BASE + "/models/digit/mnist_data/labels.txt",  # args['labels'],
+        1,  # args['batch_size'],
+        True  # not args['nogpu'],
+    )
 
-print result
+    print result
+
+
+recognize_CMT_number(FILE)
