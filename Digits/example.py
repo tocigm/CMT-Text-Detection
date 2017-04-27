@@ -271,5 +271,3 @@ if __name__ == '__main__':
         1,                                                                  # args['batch_size'],
         True                                                                # not args['nogpu'],
     )
-
-    print result

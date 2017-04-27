@@ -68,7 +68,7 @@ def split_digits(img, path):
                 im[i - size:i + size, j - size:j + size] = 255
 
     abc = im
-    print abc.shape
+    # print abc.shape
     fake = np.zeros(abc.shape).astype('uint8')
 
     blurred = cv2.GaussianBlur(abc, (5, 5), 0)
@@ -76,14 +76,14 @@ def split_digits(img, path):
 
     cnts, _ = cv2.findContours(xyz, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
-    print len(cnts)
+    # print len(cnts)
     i = 0
     for c in cnts:
         if cv2.arcLength(c, True) > 100:
             i = i + 1
             x, y, w, h = cv2.boundingRect(c)
 
-            print cv2.boundingRect(c)
+            # print cv2.boundingRect(c)
 
             core = img[y:y + h, x:x + w]
             npad = ((10, 10), (10, 10))
@@ -114,8 +114,6 @@ def recognize_CMT_number (img_path):
         1,  # args['batch_size'],
         True  # not args['nogpu'],
     )
-
-    print result
 
 
 recognize_CMT_number(FILE)

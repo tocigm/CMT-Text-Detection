@@ -16,6 +16,7 @@ from CTPN.detectors import TextProposalDetector, TextDetector
 from CTPN.utils.timer import Timer
 import os.path as osp
 import random
+from  Digits.detect_digit import recognize_CMT_number
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
@@ -89,11 +90,12 @@ def detectCracks(inputImg):
         cropped = img.copy()[y1:y3, x1:x3]
         name = os.getcwd() + "/upload/"+str(random.randint(1,10000))+inputImg
         cv2.imwrite(name, cropped)
-
+        print recognize_CMT_number(name)
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
 
     cv2.imwrite(annotatedImgPath, img)
+
 
     has_phone = True
     result = {}
