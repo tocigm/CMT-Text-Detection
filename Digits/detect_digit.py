@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-BASE = "/Users/kidio/git/bagiks/CMT-Text-Detection/"
+#BASE = "/Users/kidio/git/bagiks/CMT-Text-Detection/"
+BASE = "/home/ubuntuCMT-Text-Detection/"
 
 '''
 def extract_digits(img, path):
@@ -123,12 +124,13 @@ def detect_phone(input_image):
     return prediction[0].argmax() > 0
 
 def resize(img):
-    cvt_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return cv2.resize(cvt_img, (28, 28), interpolation=cv2.INTER_LINEAR)
+    # cvt_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # return cv2.resize(cvt_img, (28, 28), interpolation=cv2.INTER_LINEAR)
+    return caffe.io.resize(img, (28,28,1))
 
 
 
-input_image = cv2.imread(BASE+"/Digits/crop/193_4.jpg")
+input_image = caffe.io.load_image(BASE+"/Digits/crop/193_4.jpg", color=False)
 print detect_phone(input_image)
 
 
