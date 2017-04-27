@@ -256,7 +256,7 @@ if __name__ == '__main__':
     # args = vars(parser.parse_args())
 
     BASE = "/home/ubuntu/CMT-Text-Detection/"
-    IMG_FOLDER = BASE + "/Digits/crop/"
+    IMG_FOLDER = BASE + "/Digits/crop/908184941258533-2015.12.05-12.52.08"
     imgs = []
     for i in os.listdir(IMG_FOLDER):
         imgs.append(os.path.join(IMG_FOLDER, i))
