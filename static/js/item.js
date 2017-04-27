@@ -13,7 +13,8 @@ angular
                 hasPhone: false,
                 cracked: '',
                 hasCracked: true,
-                crack_accuracy: 0
+                crack_accuracy: 0,
+                CMT: ''
             };
         }
 
@@ -22,7 +23,8 @@ angular
                 hasPhone:object.hasPhone,
                 cracked: object.cracked,
                 hasCracked: object.hasCracked,
-                crack_accuracy: object.crack_accuracy
+                crack_accuracy: object.crack_accuracy,
+                CMT: object.CMT
             }
         }
 

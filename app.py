@@ -83,6 +83,7 @@ def detectCracks(inputImg):
 
     print text_lines
     scores = []
+    CMT_number = ""
     for line in text_lines:
         x1, y1, x3, y3, score = line
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
@@ -92,7 +93,9 @@ def detectCracks(inputImg):
 
         cv2.imwrite(name, cropped)
 
-        print recognize_CMT_number(name)
+        temp = recognize_CMT_number(name)
+        if len(temp) == 9:
+            CMT_number = temp
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
@@ -108,6 +111,7 @@ def detectCracks(inputImg):
         result['hasCracked'] = True
         result['crack_accuracy'] = str(np.mean(np.array(scores)) * 100)[:6]
         result['cracked'] = annotatedImgPath.split("/")[-1]
+        result['CMT'] = CMT_number
 
     else:
         result['hasPhone'] = False
