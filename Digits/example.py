@@ -234,9 +234,8 @@ def classify(caffemodel, deploy_file, image_files,
 
     result = ""
     for key , value in sorted(predicted.iteritems(), key=lambda (k,v) : (int(k.split("_")[0]), v)):
-        print key, value
         result += value
-    print result
+    return result
 
 
 if __name__ == '__main__':
@@ -263,7 +262,7 @@ if __name__ == '__main__':
         imgs.append(os.path.join(IMG_FOLDER, i))
 
 
-    classify(
+    result = classify(
         BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
         BASE + "/models/digit/mnist_model/deploy.prototxt",                 # args['deploy_file'],
         imgs,                                  # args['image_file'],
@@ -273,3 +272,4 @@ if __name__ == '__main__':
         True                                                                # not args['nogpu'],
     )
 
+    print result
