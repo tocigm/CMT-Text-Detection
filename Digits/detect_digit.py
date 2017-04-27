@@ -100,6 +100,7 @@ saved_path = xxx(FILE)
 
 BASE = "/home/ubuntu/CMT-Text-Detection/"
 IMG_FOLDER = saved_path
+print saved_path
 imgs = []
 for i in os.listdir(IMG_FOLDER):
     imgs.append(os.path.join(IMG_FOLDER, i))
