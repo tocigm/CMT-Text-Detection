@@ -15,6 +15,16 @@ from google.protobuf import text_format
 import numpy as np
 import PIL.Image
 import scipy.misc
+import logging
+
+logger = logging.getLogger("recognize-digit")
+logger.setLevel(logging.DEBUG)
+
+fh = logging.FileHandler("recognize-digit.log")
+fh.setLevel(logging.DEBUG)
+
+logger.addHandler(fh)
+
 
 os.environ['GLOG_minloglevel'] = '2'  # Suppress most caffe output
 import caffe  # noqa
@@ -208,34 +218,40 @@ def classify(caffemodel, deploy_file, image_files,
     #
     # Process the results
     #
+    if scores is not None:
+        indices = (-scores).argsort()[:, :1]  # take top 5 results
+        logger.info("-------------------------")
+        logger.debug(scores)
 
-    indices = (-scores).argsort()[:, :1]  # take top 5 results
-    classifications = []
-    for image_index, index_list in enumerate(indices):
-        result = []
-        for i in index_list:
-            # 'i' is a category in labels and also an index into scores
-            if labels is None:
-                label = 'Class #%s' % i
-            else:
-                label = labels[i]
-            result.append((label, round(100.0 * scores[image_index, i], 4)))
-        classifications.append(result)
+        classifications = []
+        for image_index, index_list in enumerate(indices):
+            result = []
+            for i in index_list:
+                # 'i' is a category in labels and also an index into scores
+                if labels is None:
+                    label = 'Class #%s' % i
+                else:
+                    label = labels[i]
+                result.append((label, round(100.0 * scores[image_index, i], 4)))
+            classifications.append(result)
 
 
-    # for index, classification in enumerate(classifications):
-    #     print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
-    #     for label, confidence in classification:
-    #         print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
-    #     print
-    predicted = {}
-    for index, classification in enumerate(classifications):
-        predicted[image_files[index].split("/")[-1]] = classification[0][0]
+        # for index, classification in enumerate(classifications):
+        #     print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
+        #     for label, confidence in classification:
+        #         print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
+        #     print
+        predicted = {}
+        for index, classification in enumerate(classifications):
+            predicted[image_files[index].split("/")[-1]] = classification[0][0]
 
-    result = ""
-    for key , value in sorted(predicted.iteritems(), key=lambda (k,v) : (int(k.split("_")[0]), v)):
-        result += value
-    return result
+        result = ""
+        for key , value in sorted(predicted.iteritems(), key=lambda (k,v) : (int(k.split("_")[0]), v)):
+            result += value
+        logger.info(result)
+        return result
+    logger.info("Failed")
+    return "Failed"
 
 
 if __name__ == '__main__':
