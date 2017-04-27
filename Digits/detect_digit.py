@@ -104,7 +104,7 @@ MEAN_IMAGE = BASE + '/models/digit/' + DATASET_JOB_NUM + '/mean.jpg'  # Do not c
 
 # load the mean image
 import caffe
-mean_image = caffe.io.load_image(MEAN_IMAGE)
+mean_image = caffe.io.load_image(MEAN_IMAGE, color=False)
 
 caffe.set_mode_gpu()
 
@@ -115,6 +115,7 @@ phone_net = caffe.Classifier(MODEL_FILE, PRETRAINED,
 
 def detect_phone(input_image):
     grid_square = resize(input_image)
+    grid_square = np.expand_dims(grid_square, axis=2)
     # subtract the mean image
     grid_square -= mean_image
     # make prediction
