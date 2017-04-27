@@ -233,7 +233,7 @@ def classify(caffemodel, deploy_file, image_files,
         predicted[image_files[index].split("/")[-1]] = classification[0][0]
 
     result = ""
-    for key in sorted(predicted.iteritems(), key=lambda (k,v) : int(k.split("_")[0])):
+    for key in sorted(predicted.iteritems(), key=lambda (k,v) : (int(k.split("_")[0]), v)):
         print key
         result += predicted[key]
     print result
