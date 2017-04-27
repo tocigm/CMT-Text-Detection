@@ -98,9 +98,9 @@ xxx(BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg")
 MODEL_JOB_NUM = 'mnist_model'  ## Remember to set this to be the job number for your model
 DATASET_JOB_NUM = 'mnist_data'  ## Remember to set this to be the job number for your dataset
 
-MODEL_FILE = BASE + 'models/digit/' + MODEL_JOB_NUM + '/deploy.prototxt'  # Do not change
-PRETRAINED = BASE + 'models/digit/' + MODEL_JOB_NUM + '/snapshot_iter_21120.caffemodel'  # Do not change
-MEAN_IMAGE = BASE + 'models/digit/' + DATASET_JOB_NUM + '/mean.jpg'  # Do not change
+MODEL_FILE = BASE + '/models/digit/' + MODEL_JOB_NUM + '/deploy.prototxt'  # Do not change
+PRETRAINED = BASE + '/models/digit/' + MODEL_JOB_NUM + '/snapshot_iter_21120.caffemodel'  # Do not change
+MEAN_IMAGE = BASE + '/models/digit/' + DATASET_JOB_NUM + '/mean.jpg'  # Do not change
 
 # load the mean image
 import caffe
@@ -127,7 +127,7 @@ def resize(img):
 
 
 
-input_image = cv2.imread(BASE+"Digits/crop/193_4.jpg")
+input_image = cv2.imread(BASE+"/Digits/crop/193_4.jpg")
 print detect_phone(input_image)
 
 
