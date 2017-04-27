@@ -209,7 +209,7 @@ def classify(caffemodel, deploy_file, image_files,
     # Process the results
     #
 
-    indices = (-scores).argsort()[:, :3]  # take top 5 results
+    indices = (-scores).argsort()[:, :1]  # take top 5 results
     classifications = []
     for image_index, index_list in enumerate(indices):
         result = []
@@ -222,12 +222,17 @@ def classify(caffemodel, deploy_file, image_files,
             result.append((label, round(100.0 * scores[image_index, i], 4)))
         classifications.append(result)
 
-    for index, classification in enumerate(classifications):
-        print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
-        for label, confidence in classification:
-            print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
-        print
 
+    # for index, classification in enumerate(classifications):
+    #     print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
+    #     for label, confidence in classification:
+    #         print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
+    #     print
+    results = {}
+    for index, classification in enumerate(classifications):
+        results[image_files[index].split("/")[-1]] = classification[0][0]
+
+    print results
 
 if __name__ == '__main__':
 
@@ -252,7 +257,6 @@ if __name__ == '__main__':
     for i in os.listdir(IMG_FOLDER):
         imgs.append(os.path.join(IMG_FOLDER, i))
 
-    print imgs
 
     classify(
         BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
@@ -263,3 +267,4 @@ if __name__ == '__main__':
         1,                                                                  # args['batch_size'],
         True                                                                # not args['nogpu'],
     )
+
