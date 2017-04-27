@@ -83,7 +83,7 @@ def xxx(path):
     kernel = np.ones((2, 2), np.uint8)
     # abc = cv2.morphologyEx(abc, cv2.MORPH_OPEN, kernel)
     foreground = cv2.dilate(foreground, kernel, iterations=1)
-    save_path = "/Users/kidio/git/bagiks/CMT-Text-Detection/Digits/crop/"+ path.split("/")[-1][:-5]
+    save_path = BASE+ "/Digits/crop/"+ path.split("/")[-1][:-4]
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
     extract_digits(foreground, save_path)
