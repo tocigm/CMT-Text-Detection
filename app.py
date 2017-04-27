@@ -92,7 +92,7 @@ def detectCracks(inputImg):
 
         cv2.imwrite(name, cropped)
 
-        print recognize_CMT_number(name)
+        # print recognize_CMT_number(name)
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
