@@ -116,4 +116,4 @@ def recognize_CMT_number (img_path):
     )
 
 
-recognize_CMT_number(FILE)
+# recognize_CMT_number(FILE)
