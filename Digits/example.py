@@ -248,6 +248,7 @@ if __name__ == '__main__':
     # args = vars(parser.parse_args())
 
     BASE = "/home/ubuntu/CMT-Text-Detection/"
+
     classify(
         BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel", # args['caffemodel'],
         BASE + "/models/digit/mnist_model/deploy.prototxt",# args['deploy_file'],
