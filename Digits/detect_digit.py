@@ -93,7 +93,7 @@ def split_digits(img, path):
 
 
 
-FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
+# FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
 def recognize_CMT_number (img_path):
     saved_path = remove_noise(img_path)
