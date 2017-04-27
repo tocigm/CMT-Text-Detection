@@ -249,13 +249,13 @@ if __name__ == '__main__':
 
     BASE = "/home/ubuntu/CMT-Text-Detection/"
     classify(
-        BASE+"/models/digit/mnist_model/snapshot_iter_21120.caffemodel", # args['caffemodel'],
+        BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel", # args['caffemodel'],
         BASE + "/models/digit/mnist_model/deploy.prototxt",# args['deploy_file'],
-        BASE + "/Digits/crop/259_2.jpg",# args['image_file'],
+        [BASE + "/Digits/crop/259_2.jpg"],# args['image_file'],
         BASE + "/models/digit/mnist_data/mean.binaryproto",# args['mean'],
         BASE + "/models/digit/mnist_data/labels.txt",# args['labels'],
-        1,# args['batch_size'],
-        True# not args['nogpu'],
+        1, # args['batch_size'],
+        True # not args['nogpu'],
     )
 
     print 'Script took %f seconds.' % (time.time() - script_start_time,)
