@@ -228,11 +228,16 @@ def classify(caffemodel, deploy_file, image_files,
     #     for label, confidence in classification:
     #         print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
     #     print
-    results = {}
+    predicted = {}
     for index, classification in enumerate(classifications):
-        results[image_files[index].split("/")[-1]] = classification[0][0]
+        predicted[image_files[index].split("/")[-1]] = classification[0][0]
 
-    print results
+    result = ""
+    for key in sorted(predicted.iteritems(), key=lambda (k,v) : int(k.split("_")[0])):
+        print key
+        result += predicted[key]
+    print result
+
 
 if __name__ == '__main__':
 
