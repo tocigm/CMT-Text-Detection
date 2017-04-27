@@ -5,43 +5,6 @@ from Digits.example import classify
 #BASE = "/Users/kidio/git/bagiks/CMT-Text-Detection/"
 BASE = "/home/ubuntu/CMT-Text-Detection/"
 
-def extract_digits(img, path):
-    abc = img.copy()
-    abc = cv2.bitwise_not(abc)
-    x, y = abc.shape
-    im = np.zeros(abc.shape).astype('uint8')
-
-    size = 3
-    for i in range(x - size):
-        for j in range(y - size):
-            if abc[i, j] > 80 and i > size and j > size:
-                im[i - size:i + size, j - size:j + size] = 255
-
-    abc = im
-    print abc.shape
-    fake = np.zeros(abc.shape).astype('uint8')
-
-    blurred = cv2.GaussianBlur(abc, (5, 5), 0)
-    xyz = cv2.Canny(abc, 200, 255)
-
-    cnts, _ = cv2.findContours(xyz, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-
-    print len(cnts)
-    i = 0
-    for c in cnts:
-        if cv2.arcLength(c, True) > 100:
-            i = i + 1
-            x, y, w, h = cv2.boundingRect(c)
-
-            print cv2.boundingRect(c)
-
-            core = img[y:y + h, x:x + w]
-            npad = ((10, 10), (10, 10))
-            pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
-
-            cv2.imwrite(path + str(x) + "_" + str(y) + ".jpg", np.array(pad_img))
-
-
 def xxx(path):
     img = cv2.imread(path)
 
@@ -89,6 +52,43 @@ def xxx(path):
     extract_digits(foreground, save_path)
 
     return save_path
+
+
+def extract_digits(img, path):
+    abc = img.copy()
+    abc = cv2.bitwise_not(abc)
+    x, y = abc.shape
+    im = np.zeros(abc.shape).astype('uint8')
+
+    size = 3
+    for i in range(x - size):
+        for j in range(y - size):
+            if abc[i, j] > 80 and i > size and j > size:
+                im[i - size:i + size, j - size:j + size] = 255
+
+    abc = im
+    print abc.shape
+    fake = np.zeros(abc.shape).astype('uint8')
+
+    blurred = cv2.GaussianBlur(abc, (5, 5), 0)
+    xyz = cv2.Canny(abc, 200, 255)
+
+    cnts, _ = cv2.findContours(xyz, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+    print len(cnts)
+    i = 0
+    for c in cnts:
+        if cv2.arcLength(c, True) > 100:
+            i = i + 1
+            x, y, w, h = cv2.boundingRect(c)
+
+            print cv2.boundingRect(c)
+
+            core = img[y:y + h, x:x + w]
+            npad = ((10, 10), (10, 10))
+            pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
+
+            cv2.imwrite(path +"/"+ str(x) + "_" + str(y) + ".jpg", np.array(pad_img))
 
 
 
