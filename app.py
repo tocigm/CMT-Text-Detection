@@ -89,8 +89,11 @@ def detectCracks(inputImg):
 
         cropped = img.copy()[y1:y3, x1:x3]
         name = os.getcwd() + "/upload/"+str(random.randint(1,10000))+inputImg
+
         cv2.imwrite(name, cropped)
-        print recognize_CMT_number(name)
+
+        # print recognize_CMT_number(name)
+
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
 
