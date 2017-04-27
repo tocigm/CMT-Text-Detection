@@ -209,7 +209,7 @@ def classify(caffemodel, deploy_file, image_files,
     # Process the results
     #
 
-    indices = (-scores).argsort()[:, :5]  # take top 5 results
+    indices = (-scores).argsort()[:, :3]  # take top 5 results
     classifications = []
     for image_index, index_list in enumerate(indices):
         result = []
