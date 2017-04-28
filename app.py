@@ -94,7 +94,7 @@ def detectCracks(inputImg):
         cv2.imwrite(name, cropped)
 
         temp = recognize_CMT_number(name)
-        if temp is not None:
+        if temp is not None and temp != "":
             CMT_number = temp
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
