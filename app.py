@@ -33,8 +33,8 @@ text_detector=TextDetector(text_proposals_detector)
 
 
 BASE = "/home/ubuntu/CMT-Text-Detection/"
-digits_net = get_net(os.path.join(BASE, "/models/digit/mnist_model/deploy.prototxt"),
-                     os.path.join(BASE, "/models/digit/mnist_data/mean.binaryproto"))
+digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/deploy.prototxt"),
+                     os.path.join(BASE, "models/digit/mnist_data/mean.binaryproto"))
 
 
 
