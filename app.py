@@ -32,7 +32,7 @@ text_proposals_detector=TextProposalDetector(CaffeModel(NET_DEF_FILE, MODEL_FILE
 text_detector=TextDetector(text_proposals_detector)
 
 
-BASE = os.getcwd()
+BASE = "/home/ubuntu/CMT-Text-Detection/"
 digits_net = get_net(os.path.join(BASE, "/models/digit/mnist_model/deploy.prototxt"),
                      os.path.join(BASE, "/models/digit/mnist_data/mean.binaryproto"))
 
