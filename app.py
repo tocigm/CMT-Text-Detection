@@ -67,6 +67,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return detectCracks(filename)
+    return jsonify(result={"status": 200})
 
 
 
