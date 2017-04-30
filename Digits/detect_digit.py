@@ -99,7 +99,7 @@ def split_digits(img, path):
 
 # FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
-def recognize_CMT_number (img_path):
+def recognize_CMT_number (caffenet, img_path):
     saved_path = remove_noise(img_path)
     # xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
 
@@ -112,7 +112,7 @@ def recognize_CMT_number (img_path):
         imgs.append(os.path.join(IMG_FOLDER, i))
 
     result = classify(
-        BASE + "/models/digit/mnist_model/snapshot_iter_21120.caffemodel",  # args['caffemodel'],
+        caffenet,
         BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
         imgs,  # args['image_file'],
         BASE + "/models/digit/mnist_data/mean.binaryproto",  # args['mean'],

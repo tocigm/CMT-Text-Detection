@@ -17,6 +17,7 @@ from CTPN.utils.timer import Timer
 import os.path as osp
 import random
 from  Digits.detect_digit import recognize_CMT_number
+from Digits.example import  get_net
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
@@ -26,9 +27,16 @@ NET_DEF_FILE="models/deploy.prototxt"
 MODEL_FILE="models/ctpn_trained_model.caffemodel"
 
 caffe.set_mode_gpu()
-# initialize the detectors
+# initialize the text block detectors
 text_proposals_detector=TextProposalDetector(CaffeModel(NET_DEF_FILE, MODEL_FILE))
 text_detector=TextDetector(text_proposals_detector)
+
+
+BASE = os.getcwd()
+digits_net = get_net(os.path.join(BASE, "/models/digit/mnist_model/deploy.prototxt"),
+                     os.path.join(BASE, "/models/digit/mnist_data/mean.binaryproto"))
+
+
 
 
 @app.route("/")
@@ -41,7 +49,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST', 'GET'])
 def upload_file():
     if request.method == 'POST':
         print("uploaded file")
@@ -93,7 +101,7 @@ def detectCracks(inputImg):
 
         cv2.imwrite(name, cropped)
 
-        temp = recognize_CMT_number(name)
+        temp = recognize_CMT_number(digits_net, name)
         if temp is not None and temp != "":
             CMT_number = temp
 

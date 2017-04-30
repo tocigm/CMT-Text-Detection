@@ -184,7 +184,7 @@ def read_labels(labels_file):
     return labels
 
 
-def classify(caffemodel, deploy_file, image_files,
+def classify(caffenet, deploy_file, image_files,
              mean_file=None, labels_file=None, batch_size=None, use_gpu=True):
     """
     Classify some images against a Caffe model and print the results
@@ -200,7 +200,7 @@ def classify(caffemodel, deploy_file, image_files,
     use_gpu -- if True, run inference on the GPU
     """
     # Load the model and images
-    net = get_net(caffemodel, deploy_file, use_gpu)
+    net = caffenet #get_net(caffemodel, deploy_file, use_gpu)
     transformer = get_transformer(deploy_file, mean_file)
     _, channels, height, width = transformer.inputs['data']
     if channels == 3:
@@ -253,7 +253,7 @@ def classify(caffemodel, deploy_file, image_files,
     logger.info("Failed")
     return "Failed"
 
-
+'''
 if __name__ == '__main__':
 
     # parser = argparse.ArgumentParser(description='Classification example - DIGITS')
@@ -287,3 +287,4 @@ if __name__ == '__main__':
         1,                                                                  # args['batch_size'],
         True                                                                # not args['nogpu'],
     )
+'''
