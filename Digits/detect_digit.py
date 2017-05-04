@@ -109,8 +109,24 @@ def split_digits_from_img(img, path, original_img = None):
 
 # FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
+def crop_CMT_digits_by_size(img_path, output_path):
+    img = cv2.imread(img_path)
+    img_name = img_path.split("/")[-1][:-4]
+    y,x,_ = img.shape
+    digit_size = int(x/9)
+
+    save_path = os.path.join(output_path, img_name)  # BASE+ "/Digits/crop/"
+    if not os.path.isdir(save_path):
+        os.mkdir(save_path)
+
+    for i in xrange(9):
+        cv2.imwrite(save_path + "/" + str(i) + "_" + img_name + ".jpg", img[:, i*digit_size: (i+1)*digit_size,:])
+
+    return save_path
+
+
 def recognize_CMT_number (caffenet, img_path):
-    saved_path = crop_digits(img_path, BASE+ "/Digits/crop/")
+    saved_path = crop_CMT_digits_by_size(img_path, BASE+ "/Digits/crop/")
     # xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
 
     if saved_path == "":
@@ -125,8 +141,8 @@ def recognize_CMT_number (caffenet, img_path):
         caffenet,
         BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
         imgs,  # args['image_file'],
-        BASE + "/models/digit/mnist_data/mean.binaryproto",  # args['mean'],
-        BASE + "/models/digit/mnist_data/labels.txt",  # args['labels'],
+        BASE + "/models/digit/mnist_model/mean.binaryproto",  # args['mean'],
+        BASE + "/models/digit/mnist_model/labels.txt",  # args['labels'],
         1,  # args['batch_size'],
         True  # not args['nogpu'],
     )

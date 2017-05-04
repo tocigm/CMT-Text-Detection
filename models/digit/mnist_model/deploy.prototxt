@@ -110,10 +110,10 @@ layer {
   top: "ip1"
 }
 layer {
-  name: "ip2"
+  name: "ip2/retrain"
   type: "InnerProduct"
   bottom: "ip1"
-  top: "ip2"
+  top: "ip2/retrain"
   param {
     lr_mult: 1.0
   }
@@ -133,6 +133,6 @@ layer {
 layer {
   name: "softmax"
   type: "Softmax"
-  bottom: "ip2"
+  bottom: "ip2/retrain"
   top: "softmax"
 }

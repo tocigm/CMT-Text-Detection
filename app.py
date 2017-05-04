@@ -19,6 +19,9 @@ import random
 from  Digits.detect_digit import recognize_CMT_number
 from Digits.example import  get_net
 
+from Digits.color_classifier import is_dominant_color
+
+
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
 app = Flask(__name__, static_path='/static')
@@ -33,7 +36,7 @@ text_detector=TextDetector(text_proposals_detector)
 
 
 BASE = "/home/ubuntu/CMT-Text-Detection/"
-digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_21120.caffemodel"),
+digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_240.caffemodel"),
                      os.path.join(BASE, "models/digit/mnist_model/deploy.prototxt"))
 
 
@@ -94,20 +97,20 @@ def detectCracks(inputImg):
         x1, y1, x3, y3, score = line
         cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
 
-        cropped = img.copy()[y1:y3, x1:x3]
+        cropped = remove_pad(img.copy()[y1:y3, x1:x3])
         name = os.getcwd() + "/upload/"+str(random.randint(1,10000))+inputImg
 
-        cv2.imwrite(name, cropped)
+        if is_dominant_color(cropped, 165):
+            cv2.imwrite(name, cropped)
 
-        temp = recognize_CMT_number(digits_net, name)
-        if temp is not None and temp != "":
-            CMT_number = temp
+            temp = recognize_CMT_number(digits_net, name)
+            if temp is not None and temp != "":
+                CMT_number = temp
 
         cv2.drawContours(img, [cnt], -1, (255, 0, 0), 3)
         scores.append(score)
 
     cv2.imwrite(annotatedImgPath, img)
-
 
     has_phone = True
     result = {}
@@ -124,6 +127,9 @@ def detectCracks(inputImg):
 
     return jsonify(result)
 
+def remove_pad(img):
+    y, x, _ = img.shape
+    return img[y - 37:y, 53:359, :]
 
 if __name__ ==  '__main__':
   app.run(host='0.0.0.0', port=5000)

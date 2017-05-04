@@ -8,10 +8,11 @@ layer {
   }
   transform_param {
     scale: 0.0125
-    mean_file: "/usr/share/digits/digits/jobs/20170418-144659-fc01/mean.binaryproto"
+    mirror: true
+    mean_file: "/usr/share/digits/digits/jobs/20170504-020104-d8ff/mean.binaryproto"
   }
   data_param {
-    source: "/usr/share/digits/digits/jobs/20170418-144659-fc01/train_db"
+    source: "/usr/share/digits/digits/jobs/20170504-020104-d8ff/train_db"
     batch_size: 64
     backend: LMDB
   }
@@ -26,10 +27,10 @@ layer {
   }
   transform_param {
     scale: 0.0125
-    mean_file: "/usr/share/digits/digits/jobs/20170418-144659-fc01/mean.binaryproto"
+    mean_file: "/usr/share/digits/digits/jobs/20170504-020104-d8ff/mean.binaryproto"
   }
   data_param {
-    source: "/usr/share/digits/digits/jobs/20170418-144659-fc01/val_db"
+    source: "/usr/share/digits/digits/jobs/20170504-020104-d8ff/val_db"
     batch_size: 32
     backend: LMDB
   }
@@ -130,10 +131,10 @@ layer {
   top: "ip1"
 }
 layer {
-  name: "ip2"
+  name: "ip2/retrain"
   type: "InnerProduct"
   bottom: "ip1"
-  top: "ip2"
+  top: "ip2/retrain"
   param {
     lr_mult: 1.0
   }
@@ -153,7 +154,7 @@ layer {
 layer {
   name: "accuracy"
   type: "Accuracy"
-  bottom: "ip2"
+  bottom: "ip2/retrain"
   bottom: "label"
   top: "accuracy"
   include {
@@ -163,7 +164,7 @@ layer {
 layer {
   name: "loss"
   type: "SoftmaxWithLoss"
-  bottom: "ip2"
+  bottom: "ip2/retrain"
   bottom: "label"
   top: "loss"
 }
