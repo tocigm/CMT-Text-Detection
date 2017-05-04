@@ -37,8 +37,6 @@ digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_
                      os.path.join(BASE, "models/digit/mnist_model/deploy.prototxt"))
 
 
-
-
 @app.route("/")
 def index():
     return send_file("templates/index.html")
@@ -68,7 +66,6 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return detectCracks(filename)
     return jsonify(result={"status": 200})
-
 
 
 
@@ -130,4 +127,39 @@ def detectCracks(inputImg):
 
 
 if __name__ ==  '__main__':
-  app.run(host='0.0.0.0', port=5000)
+  # app.run(host='0.0.0.0', port=5000)
+
+
+    CMT_photos_path = BASE + "/dataset/CMT/"
+    ID_photos_path = BASE + "/dataset/ID/"
+    digits_path = BASE + "/dataset/digits/"
+
+    # for image in path
+
+        # get all patch
+
+        # select the ID number patch
+
+        # split the digit
+    from Digits.color_classifier import is_dominant_color
+    from Digits.detect_digit import crop_digits
+    for CMT_photo in os.listdir(CMT_photos_path):
+        img = cv2.imread(os.path.join(CMT_photos_path, CMT_photo))
+
+        img, f = resize_im(img, cfg.SCALE, cfg.MAX_SCALE)
+        text_lines = text_detector.detect(img)
+
+        print text_lines
+        scores = []
+        CMT_number = ""
+        for line in text_lines:
+            x1, y1, x3, y3, score = line
+            cnt = np.array([[x1, y1], [x1, y3], [x3, y3], [x1, y3]]).astype('int32')
+
+            cropped = img.copy()[y1:y3, x1:x3]
+            if is_dominant_color(cropped, 165):
+                name = ID_photos_path + CMT_photo
+                cv2.imwrite(name, cropped)
+
+                crop_digits(name, digits_path, crop_original_img= True )
+

@@ -50,16 +50,25 @@ def remove_noise(img_path):
     kernel = np.ones((2, 2), np.uint8)
     # abc = cv2.morphologyEx(abc, cv2.MORPH_OPEN, kernel)
     foreground = cv2.dilate(foreground, kernel, iterations=1)
-    save_path = BASE+ "/Digits/crop/" + img_path.split("/")[-1][:-4]
+
+    return foreground
+
+def crop_digits(img_path, output_path, crop_original_img = False):
+
+    foreground = remove_noise(img_path)
+
+    save_path = os.path.join(output_path, img_path.split("/")[-1][:-4]) #BASE+ "/Digits/crop/"
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
 
-    split_digits(foreground, save_path)
+    if crop_original_img:
+        split_digits_from_img(foreground, save_path, cv2.imread(img_path))
+    else:
+        split_digits_from_img(foreground, save_path, None)
 
     return save_path
 
-
-def split_digits(img, path):
+def split_digits_from_img(img, path, original_img = None):
     abc = img.copy()
     abc = cv2.bitwise_not(abc)
     x, y = abc.shape
@@ -89,18 +98,19 @@ def split_digits(img, path):
 
             # print cv2.boundingRect(c)
 
-            core = img[y:y + h, x:x + w]
-            npad = ((10, 10), (10, 10))
-            pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
+            core = img[y:y + h, x:x + w] if original_img is None else original_img[y:y + h, x:x + w]
 
-            cv2.imwrite(path +"/"+ str(x) + "_" + str(y) + ".jpg", np.array(pad_img))
+            # npad = ((10, 10), (10, 10))
+            # pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
+
+            cv2.imwrite(path +"/"+ str(x) + "_" + str(y) + ".jpg", core)
 
 
 
 # FILE = BASE + "upload/460884941172522-2015.12.05-11.36.03.jpg"
 
 def recognize_CMT_number (caffenet, img_path):
-    saved_path = remove_noise(img_path)
+    saved_path = crop_digits(img_path, BASE+ "/Digits/crop/")
     # xxx("/Users/kidio/git/bagiks/CMT-Text-Detection/upload/604684941172522-2015.12.05-11.36.03.jpg")
 
     if saved_path == "":
@@ -121,6 +131,3 @@ def recognize_CMT_number (caffenet, img_path):
         True  # not args['nogpu'],
     )
     return result
-
-
-# recognize_CMT_number(FILE)
