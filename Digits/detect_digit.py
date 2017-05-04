@@ -143,13 +143,16 @@ def recognize_CMT_number (caffenet, img_path):
     for i in os.listdir(IMG_FOLDER):
         imgs.append(os.path.join(IMG_FOLDER, i))
 
+    # Todo:
+    imgs = ["/home/ubuntu/CMT-Text-Detection/1_9738051306499.jpg"]
+
     result = classify(
         caffenet,
         BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
         imgs,  # args['image_file'],
         BASE + "/models/digit/mnist_model/mean.binaryproto",  # args['mean'],
         BASE + "/models/digit/mnist_model/labels.txt",  # args['labels'],
-        1,  # args['batch_size'],
+        9,  # args['batch_size'],
         True  # not args['nogpu'],
     )
     return result
