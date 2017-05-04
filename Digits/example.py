@@ -236,11 +236,12 @@ def classify(caffenet, deploy_file, image_files,
             classifications.append(result)
 
 
-        # for index, classification in enumerate(classifications):
-        #     print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
-        #     for label, confidence in classification:
-        #         print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
-        #     print
+        for index, classification in enumerate(classifications):
+            logger.info('{:-^80}'.format(' Prediction for %s ' % image_files[index]))
+            for label, confidence in classification:
+                logger.info( '{:9.4%} - "{}"'.format(confidence / 100.0, label))
+
+
         predicted = {}
         for index, classification in enumerate(classifications):
             predicted[image_files[index].split("/")[-1]] = classification[0][0]
@@ -248,7 +249,7 @@ def classify(caffenet, deploy_file, image_files,
         result = ""
         for key , value in sorted(predicted.iteritems(), key=lambda (k,v) : (int(k.split("_")[0]), v)):
             result += value
-        logger.info(result)
+            logger.info((key, value))
         return result
     logger.info("Failed")
     return "Failed"

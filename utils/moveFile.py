@@ -1,13 +1,24 @@
 import os
 
-PATH = "/Users/kidio/Downloads/cracked_gg"
+# Build maps
+labelled_map = {}
+LABELLED = "/Users/kidio/git/bagiks/CMT-Text-Detection/dataset/temp/labelled"
+for f in os.listdir(LABELLED):
+    for i in os.listdir(os.path.join(LABELLED, f)):
+        labelled_map[i.split(".")[0]] = f
 
-if os.path.exists(PATH):
-    files = os.listdir(PATH)
-    for m in files:
+print  labelled_map
 
-        CHILD = os.path.join(PATH, m)
-        if os.path.isdir(CHILD):
-            for i in os.listdir(CHILD):
-                if "DS_Store" not in i:
-                    os.rename(os.path.join(CHILD, i), os.path.join(CHILD, m + "_" + i + ".jpg"))
+
+
+# move file
+
+DIGITS = "/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/temp/digits"
+for f in os.listdir(DIGITS):
+    folder = os.path.join(DIGITS, f)
+    for i in os.listdir(folder):
+        prefix = i.split("+")[0]
+        if prefix in labelled_map:
+            os.rename(os.path.join(folder, i), os.path.join(os.path.join(LABELLED, labelled_map[prefix]), i))
+
+

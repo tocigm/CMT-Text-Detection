@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import os
 from Digits.example import classify
-
+import random
 from  color_classifier import is_dominant_color
 BASE = "/home/ubuntu/CMT-Text-Detection/"
 
@@ -90,6 +90,7 @@ def split_digits_from_img(img, path, original_img = None):
     cnts, _ = cv2.findContours(xyz, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     # print len(cnts)
+    img_name = path.split("/")[-1]
     i = 0
     for c in cnts:
         if cv2.arcLength(c, True) > 100:
@@ -98,12 +99,16 @@ def split_digits_from_img(img, path, original_img = None):
 
             # print cv2.boundingRect(c)
 
-            core = img[y:y + h, x:x + w] if original_img is None else original_img[y:y + h, x:x + w]
+            num_of_crop = 6
+            for j in xrange(num_of_crop):
+                left_pad = random.randint(2,10)
+                right_pad = random.randint(2,10)
+                core = img[y:y + h, x:x + w] if original_img is None else original_img[y:y + h, x-left_pad:x + w +right_pad]
 
-            # npad = ((10, 10), (10, 10))
-            # pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
+                # npad = ((10, 10), (10, 10))
+                # pad_img = np.pad(core, pad_width=npad, mode='constant', constant_values=255)
 
-            cv2.imwrite(path +"/"+ str(x) + "_" + str(y) + ".jpg", core)
+                cv2.imwrite(path +"/"+ str(x) + "_" + str(y)+"_"+img_name +"+"+str(j)+ ".jpg", core)
 
 
 
@@ -120,7 +125,8 @@ def crop_CMT_digits_by_size(img_path, output_path):
         os.mkdir(save_path)
 
     for i in xrange(9):
-        cv2.imwrite(save_path + "/" + str(i) + "_" + img_name + ".jpg", img[:, i*digit_size: (i+1)*digit_size,:])
+        cv2.imwrite(save_path + "/" + str(i) + "_" + img_name + ".jpg",
+                    cv2.cvtColor(img[:, i*digit_size: (i+1)*digit_size,:], cv2.COLOR_BGR2GRAY))
 
     return save_path
 
