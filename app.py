@@ -36,7 +36,7 @@ text_detector=TextDetector(text_proposals_detector)
 
 
 BASE = "/home/ubuntu/CMT-Text-Detection/"
-digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_3080.caffemodel"),
+digits_net = get_net(os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_4200.caffemodel"),
                      os.path.join(BASE, "models/digit/mnist_model/deploy.prototxt"))
 
 
