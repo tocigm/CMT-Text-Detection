@@ -8,7 +8,7 @@ layer {
   }
   transform_param {
     scale: 0.0125
-    mean_file: "/usr/share/digits/digits/jobs/20170504-172813-b86a/mean.binaryproto"
+    mean_value: 192.028061224
   }
   data_param {
     source: "/usr/share/digits/digits/jobs/20170504-172813-b86a/train_db"
@@ -26,7 +26,7 @@ layer {
   }
   transform_param {
     scale: 0.0125
-    mean_file: "/usr/share/digits/digits/jobs/20170504-172813-b86a/mean.binaryproto"
+    mean_value: 192.028061224
   }
   data_param {
     source: "/usr/share/digits/digits/jobs/20170504-172813-b86a/val_db"

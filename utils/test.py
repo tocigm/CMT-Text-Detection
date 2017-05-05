@@ -209,7 +209,7 @@ if __name__ == '__main__':
     BASE = "/home/ubuntu/CMT-Text-Detection/"
 
     classify(
-        caffemodel= os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_4200.caffemodel"),
+        caffemodel= os.path.join(BASE, "models/digit/mnist_model/snapshot_iter_2100.caffemodel"),
              deploy_file=  BASE + "/models/digit/mnist_model/deploy.prototxt",  # args['deploy_file'],
              image_files= [img],  # args['image_file'],
              mean_file=BASE + "/models/digit/mnist_model/mean.binaryproto",  # args['mean'],

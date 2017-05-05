@@ -125,8 +125,10 @@ def crop_CMT_digits_by_size(img_path, output_path):
         os.mkdir(save_path)
 
     for i in xrange(9):
+        l = i*digit_size
+        r = (i+1)*digit_size if i < 9 else (i+1)*digit_size - 5
         cv2.imwrite(save_path + "/" + str(i) + "_" + img_name + ".jpg",
-                    cv2.cvtColor(img[:, i*digit_size: (i+1)*digit_size,:], cv2.COLOR_BGR2GRAY))
+                    cv2.cvtColor(img[:, l:r,:], cv2.COLOR_BGR2GRAY))
 
     return save_path
 
