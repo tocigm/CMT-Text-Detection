@@ -13,4 +13,4 @@ def is_dominant_color(img, img_mean):
     clt.fit(image)
 
     dominant_colors = np.mean(clt.cluster_centers_, axis=1)
-    return img_mean - 5 < dominant_colors[0] < img_mean + 5 or img_mean - 5 < dominant_colors[1] < img_mean + 5
+    return img_mean - 10 < dominant_colors[0] < img_mean + 10 or img_mean - 10 < dominant_colors[1] < img_mean + 10
