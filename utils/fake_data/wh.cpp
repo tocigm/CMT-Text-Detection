@@ -84,13 +84,16 @@ int main( int argc, const char** argv )
     
     std::cout << textSize.width << textSize.height << "\n";
     // center the text
+
     Mat img( textSize2.height+ 10,textSize2.width, CV_8UC3, Scalar(255,255,255));
-    
+    Mat mask;
     string fontFace2 = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
 
 
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(0,0,0), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(143,133,106), false, false);
+    cvtColor(img, mask, CV_BGR2GRAY);
+    bitwise_not ( mask, mask);
     imwrite("./text.jpg", img);
 
 
@@ -113,15 +116,19 @@ int main( int argc, const char** argv )
    
     resize(crop, crop, Size(), 10,10, INTER_CUBIC);
     resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
-    double alpha = 1;
+    double alpha = 0.95;
     Mat dst;
     addWeighted(crop, alpha, background, 1.0-alpha, 0.0, dst);
 
-
-    //putTextCairo(img, "Vũ Khương Duy2", cv::Point2d(1,1), "Times", 45, Scalar(0,0,255), false, false);
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
+
+
+    img.copyTo(dst,mask);
+    cout << img << "\n";
+
     imwrite("./out.jpg", dst);
-    imshow("MyWindow", img); //display the image which is stored in the 'img' in the "MyWindow" window
+
+    imshow("MyWindow", dst); //display the image which is stored in the 'img' in the "MyWindow" window
 
     waitKey(0); //wait infinite time for a keypress
 
