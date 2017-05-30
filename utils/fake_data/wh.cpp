@@ -104,7 +104,7 @@ int main( int argc, const char** argv )
     for(int y=0;y<img.rows;y++){
         for(int x=0;x< img.cols;x++){
             Vec3b & intensity = img.at<Vec3b>(y,x);
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) = 0 ){
+            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) > 0 ){
                 // randomly for black (0,0,0)
                 cout<< "image : "<< y << "-" << x << "\n";
                 cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
