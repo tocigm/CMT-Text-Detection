@@ -65,8 +65,6 @@ void putTextCairo(
 }
 
 
-
-
 int main( int argc, const char** argv )
 {
     //Mat image = imread("/Users/kidio/Downloads/000002.jpg", CV_LOAD_IMAGE_UNCHANGED); //read the image data in the file "MyPic.JPG" and store it in 'img'
@@ -90,8 +88,6 @@ int main( int argc, const char** argv )
     Mat img( textSize2.height+ 10,textSize2.width, CV_8UC3, Scalar(255,255,255));
     Mat mask;
     string fontFace2 = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
-
-
     // write text to white background
     putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(0,0,0), false, false);
     
@@ -109,54 +105,9 @@ int main( int argc, const char** argv )
     std::uniform_int_distribution<int>  distr(range_from, range_to);
 
     std::uniform_int_distribution<int>  distr1(-10000, 10000);
-/*
-    for(int y=0;y<img.rows;y++){
-        for(int x=0;x< img.cols;x++){
-            Vec3b & intensity = img.at<Vec3b>(y,x);
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) <=150 ){
-                // randomly for black (0,0,0)
-                cout<< "image : "<< y << "-" << x << "\n";
-                cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
-                
-                if (distr(generator) % 15 == 0){
-                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 100 + distr(generator);
-                    intensity2.val[1] = 100 +  distr(generator);
-                    intensity2.val[2] = 100 + distr(generator);
 
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
-                } else if (distr(generator) % 15 <10){
-                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 160 + distr(generator);
-                    intensity2.val[1] = 160 +  distr(generator);
-                    intensity2.val[2] = 160 + distr(generator);
-
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
-                } else {
-                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 220 + distr(generator);
-                    intensity2.val[1] = 220 +  distr(generator);
-                    intensity2.val[2] = 220 + distr(generator);
-
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
-                }
-
-            } else {  // randomly for other
-
-            }
-        }
-    }
-*/
     Mat fullImageHSV;
     cvtColor(img, fullImageHSV, CV_BGR2HSV);
-
-
     for(int y=0;y<fullImageHSV.rows;y++){
         for(int x=0;x< fullImageHSV.cols;x++){
             Vec3b & intensity = fullImageHSV.at<Vec3b>(y,x);
@@ -179,7 +130,7 @@ int main( int argc, const char** argv )
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
                 } 
-                else if (distr1(generator) % 20 < 8){
+                else if (distr1(generator) % 20 < 5){
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
                     intensity2.val[0] = 176/2 + distr(generator);
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
@@ -209,8 +160,6 @@ int main( int argc, const char** argv )
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
                 }
-
-
 
             } else {  // randomly for other
 
@@ -242,9 +191,6 @@ int main( int argc, const char** argv )
 
     cvtColor(fullImageHSV,img, CV_HSV2BGR);
 
-
-
-
     // write text to CMT background
 
     Mat img3 = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/048805307.jpg");
@@ -258,6 +204,8 @@ int main( int argc, const char** argv )
     roi.height = textSize.height + 10;
 
     Mat crop = img3(roi);
+
+
     std::cout << crop.rows << "-" << crop.cols << "\n";
     Mat background = crop.clone(); 
     putTextCairo(crop,text, cv::Point2d(textSize.width/2, textSize.height/2+ 5), fontFace2, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
@@ -269,8 +217,6 @@ int main( int argc, const char** argv )
     addWeighted(crop, alpha, background, 1.0-alpha, 0.0, dst);
 
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
-
-
     img.copyTo(dst,mask);
 
     imwrite("./out.jpg", dst);
