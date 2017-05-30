@@ -165,47 +165,55 @@ int main( int argc, const char** argv )
     for(int y=0;y<fullImageHSV.rows;y++){
         for(int x=0;x< fullImageHSV.cols;x++){
             Vec3b & intensity = fullImageHSV.at<Vec3b>(y,x);
-            cout<< "image : "<< y << "-" << x << "\n";
-            cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
-            /*    
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) <=150 ){
+            // cout<< "image : "<< y << "-" << x << "\n";
+                
+            if((float)(intensity.val[2]) < 50 ){
+                cout<< (float)(intensity.val[0])<< ","<< (float)(intensity.val[1])<< ","<< (float)(intensity.val[2]) <<"\n";
+            
                 // randomly for black (0,0,0)
                 
-                if (distr(generator) % 15 == 0){
+                if (distr(generator) % 15 ==0){
                     Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 100 + distr(generator);
-                    intensity2.val[1] = 100 +  distr(generator);
-                    intensity2.val[2] = 100 + distr(generator);
+                    intensity2.val[0] = 169;
+                    intensity2.val[1] = 12;
+                    intensity2.val[2] = 65;
 
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
-                } else if (distr(generator) % 15 <10){
+                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+            
+                    fullImageHSV.at<Vec3b>(y,x) = intensity2;
+
+                } else if (distr(generator) % 15 <5 ){
                     Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 160 + distr(generator);
-                    intensity2.val[1] = 160 +  distr(generator);
-                    intensity2.val[2] = 160 + distr(generator);
+                    intensity2.val[0] = 176;
+                    intensity2.val[1] = 19;
+                    intensity2.val[2] = 57;
 
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
+                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+            
+                    fullImageHSV.at<Vec3b>(y,x) = intensity2;
+                } else if (distr(generator) % 15  <15){
+                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
+                    intensity2.val[0] = 174;
+                    intensity2.val[1] = 10;
+                    intensity2.val[2] = 78;
+
+                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+            
+                    fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } else {
-                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                    intensity2.val[0] = 220 + distr(generator);
-                    intensity2.val[1] = 220 +  distr(generator);
-                    intensity2.val[2] = 220 + distr(generator);
 
-                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
-                    
-                    img.at<Vec3b>(y,x) = intensity2;
                 }
+
+
 
             } else {  // randomly for other
 
             }
-            */
+            
         }
     }
+
+    cvtColor(fullImageHSV,img, CV_HSV2BGR);
 
 
 
