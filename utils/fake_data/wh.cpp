@@ -85,13 +85,13 @@ int main( int argc, const char** argv )
     std::cout << textSize.width << textSize.height << "\n";
     // center the text
 
-    Mat img( textSize2.height+ 10,textSize2.width, CV_8UC3, Scalar(0,0,0));
+    Mat img( textSize2.height+ 10,textSize2.width, CV_8UC3, Scalar(255,255,255));
     Mat mask;
     string fontFace2 = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
 
 
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(143,133,106), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(0,0,0), false, false);
     
     cvtColor(img, mask, CV_BGR2GRAY);
     bitwise_not ( mask, mask);
@@ -102,15 +102,15 @@ int main( int argc, const char** argv )
     for(int y=0;y<img.rows;y++){
         for(int x=0;x< img.cols;x++){
             Vec3b & intensity = img.at<Vec3b>(y,x);
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) != 0 ){
+            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) < 500 ){
                 cout<< "image : "<< y << "-" << x << "\n";
                 cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
                 
-                // Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                // intensity2.val[0] = 0;
-                // intensity2.val[1] = 100;
-                // intensity2.val[2] = 100;
-                // img.at<Vec3b>(y,x) = intensity2;
+                Vec3b & intensity2 = img.at<Vec3b>(y,x);
+                intensity2.val[0] = 0;
+                intensity2.val[1] = 100;
+                intensity2.val[2] = 100;
+                img.at<Vec3b>(y,x) = intensity2;
             }
         }
     }
@@ -143,11 +143,11 @@ int main( int argc, const char** argv )
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
 
 
-    dst.copyTo(img,mask);
+    img.copyTo(dst,mask);
 
     imwrite("./out.jpg", dst);
 
-    imshow("MyWindow", mask); //display the image which is stored in the 'img' in the "MyWindow" window
+    imshow("MyWindow", dst); //display the image which is stored in the 'img' in the "MyWindow" window
 
     waitKey(0); //wait infinite time for a keypress
 
