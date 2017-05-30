@@ -69,11 +69,11 @@ int main( int argc, const char** argv )
 {
     //Mat image = imread("/Users/kidio/Downloads/000002.jpg", CV_LOAD_IMAGE_UNCHANGED); //read the image data in the file "MyPic.JPG" and store it in 'img'
      
-    string text = "NHUNG";
+    string text = "Khuong";
     int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
     double fontScale = 1.0;
-    int thickness = 2;
-    int baseline= 3;
+    int thickness = 1;
+    int baseline= 1 ;
 
     Size textSize = getTextSize(text, fontFace,
                             fontScale, thickness, &baseline);
@@ -85,11 +85,11 @@ int main( int argc, const char** argv )
     std::cout << textSize.width << textSize.height << "\n";
     // center the text
 
-    Mat img( textSize2.height+ 10,textSize2.width, CV_8UC3, Scalar(255,255,255));
+    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
     Mat mask;
     string fontFace2 = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(0,0,0), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize.width/2 -3, textSize.height/2+ 3), fontFace2, 27, Scalar(0,0,0), false, false);
     
 
     cvtColor(img, mask, CV_BGR2GRAY);
@@ -200,15 +200,15 @@ int main( int argc, const char** argv )
     Rect roi;
     roi.x = 410;
     roi.y = 200;
-    roi.width = textSize.width;
-    roi.height = textSize.height + 10;
+    roi.width = textSize.width - 6;
+    roi.height = textSize.height + 6;
 
     Mat crop = img3(roi);
 
 
     std::cout << crop.rows << "-" << crop.cols << "\n";
     Mat background = crop.clone(); 
-    putTextCairo(crop,text, cv::Point2d(textSize.width/2, textSize.height/2+ 5), fontFace2, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
+    putTextCairo(crop,text, cv::Point2d(textSize.width/2 - 3, textSize.height/2+ 3), fontFace2, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
    
     resize(crop, crop, Size(), 10,10, INTER_CUBIC);
     resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
