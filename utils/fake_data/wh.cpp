@@ -93,7 +93,9 @@ int main( int argc, const char** argv )
     // write text to white background
     putTextCairo(img,text, cv::Point2d(textSize2.width/2, textSize2.height/2+ 5), fontFace2, 27, Scalar(0,0,0), false, false);
     
+
     cvtColor(img, mask, CV_BGR2GRAY);
+    threshold(mask, mask, 240, 255, THRESH_BINARY);
     bitwise_not ( mask, mask);
 
     imwrite("./text.jpg", img);
@@ -102,15 +104,18 @@ int main( int argc, const char** argv )
     for(int y=0;y<img.rows;y++){
         for(int x=0;x< img.cols;x++){
             Vec3b & intensity = img.at<Vec3b>(y,x);
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) < 500 ){
+            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) = 0 ){
+                // randomly for black (0,0,0)
                 cout<< "image : "<< y << "-" << x << "\n";
                 cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
                 
                 Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                intensity2.val[0] = 0;
-                intensity2.val[1] = 100;
-                intensity2.val[2] = 100;
+                intensity2.val[0] = 154;
+                intensity2.val[1] = 168;
+                intensity2.val[2] = 135;
                 img.at<Vec3b>(y,x) = intensity2;
+            } else {  // randomly for other
+
             }
         }
     }
