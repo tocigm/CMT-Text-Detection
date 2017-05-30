@@ -71,7 +71,7 @@ int main( int argc, const char** argv )
 {
     //Mat image = imread("/Users/kidio/Downloads/000002.jpg", CV_LOAD_IMAGE_UNCHANGED); //read the image data in the file "MyPic.JPG" and store it in 'img'
      
-    string text = "Đạt";
+    string text = "NHUNG";
     int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
     double fontScale = 1.0;
     int thickness = 2;
@@ -108,7 +108,7 @@ int main( int argc, const char** argv )
     std::mt19937                        generator(rand_dev());
     std::uniform_int_distribution<int>  distr(range_from, range_to);
 
-    std::uniform_int_distribution<int>  distr1(range_from, range_to);
+    std::uniform_int_distribution<int>  distr1(-10000, 10000);
     std::uniform_int_distribution<int>  distr2(range_from, range_to);
     std::uniform_int_distribution<int>  distr3(range_from, range_to);
     std::uniform_int_distribution<int>  distr4(range_from, range_to);
@@ -173,7 +173,7 @@ int main( int argc, const char** argv )
                 // randomly for black (0,0,0)
 
                 
-                if (distr(generator) % 20 == 0){
+                if (distr1(generator) % 20 == 0){
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
                     intensity2.val[0] = 90 + distr(generator);
                     intensity2.val[1] = 13/100.0 * 255+ distr(generator);
@@ -184,7 +184,7 @@ int main( int argc, const char** argv )
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
                 } 
-                else if (distr(generator) % 20 < 7){
+                else if (distr1(generator) % 20 < 8){
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
                     intensity2.val[0] = 176/2 + distr(generator);
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
@@ -194,7 +194,7 @@ int main( int argc, const char** argv )
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } 
-                else if (distr(generator) % 20  < 15){
+                else if (distr1(generator) % 20  < 15){
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
                     intensity2.val[0] = 162/2 + distr(generator);
                     intensity2.val[1] = 10/100.0 * 255+ distr(generator);
@@ -205,7 +205,7 @@ int main( int argc, const char** argv )
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } else {
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
-                    intensity2.val[0] = 162/2 + distr(generator);
+                    intensity2.val[0] = 160/2 + distr(generator);
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 94/100.0 * 255+ distr(generator);
 
@@ -219,7 +219,7 @@ int main( int argc, const char** argv )
 
             } else {  // randomly for other
 
-                if (distr(generator) % 15  < 10){
+                if (distr1(generator) % 15  < 10){
                     Vec3b & intensity2 = fullImageHSV.at<Vec3b>(y,x);
                     intensity2.val[0] = 162/2 + distr(generator);
                     intensity2.val[1] = 10/100.0 * 255+ distr(generator);
