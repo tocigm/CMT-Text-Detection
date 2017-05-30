@@ -3,6 +3,8 @@
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
 #include <opencv2/imgproc.hpp>
+#include <random>
+
 using namespace cv;
 using namespace std;
 
@@ -69,7 +71,7 @@ int main( int argc, const char** argv )
 {
     //Mat image = imread("/Users/kidio/Downloads/000002.jpg", CV_LOAD_IMAGE_UNCHANGED); //read the image data in the file "MyPic.JPG" and store it in 'img'
      
-    string text = "Nguyen";
+    string text = "QUYNH";
     int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
     double fontScale = 1.0;
     int thickness = 2;
@@ -100,20 +102,56 @@ int main( int argc, const char** argv )
 
     imwrite("./text.jpg", img);
 
+    const int range_from  = -30;
+    const int range_to    = 30;
+    std::random_device                  rand_dev;
+    std::mt19937                        generator(rand_dev());
+    std::uniform_int_distribution<int>  distr(range_from, range_to);
+
+    std::uniform_int_distribution<int>  distr1(range_from, range_to);
+    std::uniform_int_distribution<int>  distr2(range_from, range_to);
+    std::uniform_int_distribution<int>  distr3(range_from, range_to);
+    std::uniform_int_distribution<int>  distr4(range_from, range_to);
+    std::uniform_int_distribution<int>  distr5(range_from, range_to);
+    std::uniform_int_distribution<int>  distr6(range_from, range_to);
 
     for(int y=0;y<img.rows;y++){
         for(int x=0;x< img.cols;x++){
             Vec3b & intensity = img.at<Vec3b>(y,x);
-            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) > 0 ){
+            if((float)(intensity.val[0]) + (float)(intensity.val[2]) + (float)(intensity.val[2]) <=150 ){
                 // randomly for black (0,0,0)
                 cout<< "image : "<< y << "-" << x << "\n";
                 cout<< "\t"<< (float)(intensity.val[0])<< "\t"<< (float)(intensity.val[1])<< "\t"<< (float)(intensity.val[2]) <<"\n";
                 
-                Vec3b & intensity2 = img.at<Vec3b>(y,x);
-                intensity2.val[0] = 154;
-                intensity2.val[1] = 168;
-                intensity2.val[2] = 135;
-                img.at<Vec3b>(y,x) = intensity2;
+                if (distr(generator) % 15 == 0){
+                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
+                    intensity2.val[0] = 100 + distr(generator);
+                    intensity2.val[1] = 100 +  distr(generator);
+                    intensity2.val[2] = 100 + distr(generator);
+
+                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
+                    
+                    img.at<Vec3b>(y,x) = intensity2;
+                } else if (distr(generator) % 15 <10){
+                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
+                    intensity2.val[0] = 160 + distr(generator);
+                    intensity2.val[1] = 160 +  distr(generator);
+                    intensity2.val[2] = 160 + distr(generator);
+
+                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
+                    
+                    img.at<Vec3b>(y,x) = intensity2;
+                } else {
+                    Vec3b & intensity2 = img.at<Vec3b>(y,x);
+                    intensity2.val[0] = 220 + distr(generator);
+                    intensity2.val[1] = 220 +  distr(generator);
+                    intensity2.val[2] = 220 + distr(generator);
+
+                    cout<< "\t"<< (float)(intensity2.val[0])<< "\t"<< (float)(intensity2.val[1])<< "\t"<< (float)(intensity2.val[2]) <<"\n";
+                    
+                    img.at<Vec3b>(y,x) = intensity2;
+                }
+
             } else {  // randomly for other
 
             }
