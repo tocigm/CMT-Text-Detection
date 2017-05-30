@@ -102,18 +102,13 @@ int main( int argc, const char** argv )
 
     imwrite("./text.jpg", img);
 
-    const int range_from  = -1;
-    const int range_to    = 1;
+    const int range_from  = -5;
+    const int range_to    = 5;
     std::random_device                  rand_dev;
     std::mt19937                        generator(rand_dev());
     std::uniform_int_distribution<int>  distr(range_from, range_to);
 
     std::uniform_int_distribution<int>  distr1(-10000, 10000);
-    std::uniform_int_distribution<int>  distr2(range_from, range_to);
-    std::uniform_int_distribution<int>  distr3(range_from, range_to);
-    std::uniform_int_distribution<int>  distr4(range_from, range_to);
-    std::uniform_int_distribution<int>  distr5(range_from, range_to);
-    std::uniform_int_distribution<int>  distr6(range_from, range_to);
 /*
     for(int y=0;y<img.rows;y++){
         for(int x=0;x< img.cols;x++){
