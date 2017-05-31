@@ -67,7 +67,7 @@ void putTextCairo(
 void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, string text){
 
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize.width/2 -3, textSize.height/2+ 3), fontFaceStr, 27, Scalar(0,0,0), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 27, Scalar(0,0,0), false, false);
     
 
     cvtColor(img, mask, CV_BGR2GRAY);
@@ -90,7 +90,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
             // cout<< "image : "<< y << "-" << x << "\n";
                 
             if((float)(intensity.val[2]) < 0.55 * 255  ){
-                cout<< (float)(intensity.val[0])<< ","<< (float)(intensity.val[1])<< ","<< (float)(intensity.val[2]) <<"\n";
+                //cout<< (float)(intensity.val[0])<< ","<< (float)(intensity.val[1])<< ","<< (float)(intensity.val[2]) <<"\n";
             
                 // randomly for black (0,0,0)
 
@@ -101,7 +101,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 13/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 88/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
@@ -112,7 +112,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 57/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } 
@@ -122,7 +122,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 10/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 78/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } else {
@@ -131,7 +131,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 94/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
@@ -145,7 +145,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 10/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 78/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
                 } else {
@@ -154,7 +154,7 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
                     intensity2.val[1] = 19/100.0 * 255+ distr(generator);
                     intensity2.val[2] = 94/100.0 * 255+ distr(generator);
 
-                    cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
+                    //cout<< "--" << (float)(intensity2.val[0])<< ","<< (float)(intensity2.val[1])<< ","<< (float)(intensity2.val[2]) <<"\n";
             
                     fullImageHSV.at<Vec3b>(y,x) = intensity2;
 
@@ -170,23 +170,25 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
 }
 
 Mat getBackground(Size textSize){
-    Mat bg_mat = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/048805307.jpg");
-   
+    Mat bg_mat = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/bg/1_268054807.jpg");
+    
+    cout << bg_mat.cols <<"---"<< bg_mat.rows<< "\n";
+    cout << textSize.height <<"-+-"<< textSize.width<< "\n";
     Rect roi;
-    roi.x = 410;
-    roi.y = 200;
-    roi.width = textSize.width - 6;
-    roi.height = textSize.height + 6;
+    
+    roi.width = textSize.width ;
+    roi.height = textSize.height ;
+
+    roi.x = bg_mat.cols - textSize.width -20;
+    roi.y = bg_mat.rows -  textSize.height - 20;
+
+    cout << roi.x <<"-+-"<<  roi.y << "\n";
 
     return bg_mat(roi);
 
 }
 
-
-int main( int argc, const char** argv )
-{
-    string text = "khuong d";
-
+Size getTextSize(string text){
     int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
     double fontScale = 1.0;
     int thickness = 1;
@@ -194,14 +196,24 @@ int main( int argc, const char** argv )
     
     Size textSize = getTextSize(text, fontFace,
                             fontScale, thickness, &baseline);
+    textSize.width -= 6;
+    textSize.height +=6 ;
     baseline += thickness;
-    
+    return textSize;
+}
+
+
+int main( int argc, const char** argv )
+{
+    string text = "khuong d";
+
+    Size textSize = getTextSize(text);
 
 
     string fontFaceStr = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
 
     // creat text image  and its mask
-    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
+    Mat img( textSize.height , textSize.width , CV_8UC3, Scalar(255,255,255));
     Mat mask;
     createMask(img, mask, textSize, fontFaceStr, text);
 
@@ -212,7 +224,7 @@ int main( int argc, const char** argv )
     
     // write text to background
     Mat crop = background.clone();
-    putTextCairo(crop,text, cv::Point2d(textSize.width/2 - 3, textSize.height/2+ 3), fontFaceStr, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
+    putTextCairo(crop,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
 
     resize(crop, crop, Size(), 10,10, INTER_CUBIC);
     resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
