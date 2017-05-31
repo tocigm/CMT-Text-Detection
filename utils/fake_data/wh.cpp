@@ -169,61 +169,62 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
 
 }
 
-
-int main( int argc, const char** argv )
-{
-    string text = "Khuong";
-
-    int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
-    double fontScale = 1.0;
-    int thickness = 1;
-    int baseline= 1 ;
-    string fontFaceStr = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
-
-    Size textSize = getTextSize(text, fontFace,
-                            fontScale, thickness, &baseline);
-    baseline += thickness;
-    
-
-
-
-    // center the text
-
-    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
-    Mat mask;
-
-
-    createMask(img, mask, textSize, fontFaceStr, text);
-
-    // write text to CMT background
-
-    Mat img3 = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/048805307.jpg");
+Mat getBackground(Size textSize){
+    Mat bg_mat = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/048805307.jpg");
    
-    std::cout << img3.rows << "-" << img3.cols << "\n";
-
     Rect roi;
     roi.x = 410;
     roi.y = 200;
     roi.width = textSize.width - 6;
     roi.height = textSize.height + 6;
 
-    Mat crop = img3(roi);
+    return bg_mat(roi);
 
-    Mat background = crop.clone(); 
+}
+
+
+int main( int argc, const char** argv )
+{
+    string text = "khuong d";
+
+    int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+    double fontScale = 1.0;
+    int thickness = 1;
+    int baseline= 1 ;
+    
+    Size textSize = getTextSize(text, fontFace,
+                            fontScale, thickness, &baseline);
+    baseline += thickness;
+    
+
+
+    string fontFaceStr = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
+
+    // creat text image  and its mask
+    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
+    Mat mask;
+    createMask(img, mask, textSize, fontFaceStr, text);
+
+    
+    // make background
+    Mat background = getBackground(textSize);
+
+    
+    // write text to background
+    Mat crop = background.clone();
     putTextCairo(crop,text, cv::Point2d(textSize.width/2 - 3, textSize.height/2+ 3), fontFaceStr, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
-   
+
     resize(crop, crop, Size(), 10,10, INTER_CUBIC);
     resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
     double alpha = 0.95;
     Mat dst;
     addWeighted(crop, alpha, background, 1.0-alpha, 0.0, dst);
 
-
+    // put things together
+    img.copyTo(dst,mask);
 
 
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
-    img.copyTo(dst,mask);
-
     imwrite("./out.jpg", dst);
 
     imshow("MyWindow", dst); //display the image which is stored in the 'img' in the "MyWindow" window
