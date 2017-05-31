@@ -99,7 +99,7 @@ vector<string> readFile(const string& pattern){
 void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, string text){
 
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 27, Scalar(0,0,0), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 29, Scalar(0,0,0), false, false);
     
 
     cvtColor(img, mask, CV_BGR2GRAY);
@@ -222,7 +222,7 @@ Mat getBackground(Size textSize){
         background = backgrounds.at(distr(generator));
         cout << "*************" << 222 << "\n";
         bg_mat = imread(background);
-    } while (bg_mat.cols <= textSize.width + 10 ||  bg_mat.rows <= textSize.height + 10);
+    } while (bg_mat.cols <= textSize.width + 10 ||  bg_mat.rows <= textSize.height + 5);
 
     // cout << background << "\n";
     // cout << bg_mat.cols - textSize.width  << "\n";
@@ -233,11 +233,11 @@ Mat getBackground(Size textSize){
     Rect roi;
     
     roi.width = textSize.width ;
-    roi.height = textSize.height ;
+    roi.height = 31;//textSize.height ;
 
 
     std::uniform_int_distribution<int>  distrX(1, bg_mat.cols - textSize.width -9);
-    std::uniform_int_distribution<int>  distrY(1, bg_mat.rows -  textSize.height -9);
+    std::uniform_int_distribution<int>  distrY(1, bg_mat.rows -  textSize.height -5);
     roi.x = distrX(generator);
     roi.y = distrY(generator);
 
@@ -289,13 +289,13 @@ int main( int argc, const char** argv )
     string fontFaceStr = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
     double alpha = 0.95;
 
-    for (int i = 0 ; i < 8000 ; i++){
+    for (int i = 0 ; i < 7184 ; i++){
         cout << "???" << i << "-"<< texts[i]<< "\n";
         text = texts[i];
         textSize = getTextSizeFromText(text);
 
         // creat text image  and its mask
-        Mat img( textSize.height , textSize.width , CV_8UC3, Scalar(255,255,255));
+        Mat img( 31 , textSize.width , CV_8UC3, Scalar(255,255,255));
         
         createMask(img, mask, textSize, fontFaceStr, text);
 
@@ -305,7 +305,7 @@ int main( int argc, const char** argv )
         
         // write text to background
         crop = background.clone();
-        putTextCairo(crop,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
+        putTextCairo(crop,text, cv::Point2d(textSize.width/2 , textSize.height/2), fontFaceStr, 29, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
 
         resize(crop, crop, Size(), 10,10, INTER_CUBIC);
         resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
