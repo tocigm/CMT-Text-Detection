@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <fstream>
 
 
 using namespace cv;
@@ -199,8 +200,6 @@ Mat getBackground(Size textSize){
     // globVector("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/bg/");
     vector<string> backgrounds = globVector(BASE + "/utils/backgrounds.txt");
 
-
-
     string background;
     Mat bg_mat;
 
@@ -261,6 +260,8 @@ Size getTextSize(string text){
 
 int main( int argc, const char** argv )
 {
+    ofstream trainFile;
+    trainFile.open("trainFile.txt", std::ios_base::app);
     string text = "khuong d";
 
     Size textSize = getTextSize(text);
@@ -293,8 +294,12 @@ int main( int argc, const char** argv )
 
 
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
-    imwrite("./out.jpg", dst);
+    imwrite(BASE+ "/dataset/words/out2.jpg", dst);
 
+    trainFile << BASE+ "/dataset/words/out2.jpg " << text << "\n";
+    trainFile << BASE+ "/dataset/words/out2.jpg " << text << "\n";
+
+    trainFile.close();
     imshow("MyWindow", dst); //display the image which is stored in the 'img' in the "MyWindow" window
 
     waitKey(0); //wait infinite time for a keypress
