@@ -316,9 +316,9 @@ int main( int argc, const char** argv )
         img.copyTo(dst,mask);
 
         namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
-        imwrite(BASE+ "dataset/words/"+ to_string(5) + ".jpg", dst);
+        imwrite(BASE+ "dataset/words/"+ to_string(i) + ".jpg", dst);
 
-        trainFile << BASE+ "dataset/words/" << i << ".jpg" << text << "\n";
+        trainFile << BASE+ "dataset/words/" << i << ".jpg " << text << "\n";
 
 
         crop.release();
