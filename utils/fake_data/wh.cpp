@@ -12,7 +12,7 @@ void putTextCairo(
         cv::Mat &targetImage,
         std::string const& text,
         cv::Point2d centerPoint,
-        std::string const& fontFace,
+        std::string const& fontFaceStr,
         double fontSize,
         cv::Scalar textColor,
         bool fontItalic,
@@ -41,7 +41,7 @@ void putTextCairo(
     // Set font and write text
     cairo_select_font_face (
                 cairo,
-                fontFace.c_str(),
+                fontFaceStr.c_str(),
                 fontItalic ? CAIRO_FONT_SLANT_ITALIC : CAIRO_FONT_SLANT_NORMAL,
                 fontBold ? CAIRO_FONT_WEIGHT_BOLD : CAIRO_FONT_WEIGHT_NORMAL);
 
@@ -64,39 +64,15 @@ void putTextCairo(
     cairo_surface_destroy(surface);
 }
 
+void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, string text){
 
-int main( int argc, const char** argv )
-{
-    //Mat image = imread("/Users/kidio/Downloads/000002.jpg", CV_LOAD_IMAGE_UNCHANGED); //read the image data in the file "MyPic.JPG" and store it in 'img'
-     
-    string text = "Khuong";
-    int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
-    double fontScale = 1.0;
-    int thickness = 1;
-    int baseline= 1 ;
-
-    Size textSize = getTextSize(text, fontFace,
-                            fontScale, thickness, &baseline);
-    baseline += thickness;
-
-    Size textSize2 = getTextSize(text, fontFace,
-                            1, thickness, &baseline);
-    
-    std::cout << textSize.width << textSize.height << "\n";
-    // center the text
-
-    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
-    Mat mask;
-    string fontFace2 = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
     // write text to white background
-    putTextCairo(img,text, cv::Point2d(textSize.width/2 -3, textSize.height/2+ 3), fontFace2, 27, Scalar(0,0,0), false, false);
+    putTextCairo(img,text, cv::Point2d(textSize.width/2 -3, textSize.height/2+ 3), fontFaceStr, 27, Scalar(0,0,0), false, false);
     
 
     cvtColor(img, mask, CV_BGR2GRAY);
     threshold(mask, mask, 240, 255, THRESH_BINARY);
-    bitwise_not ( mask, mask);
-
-    imwrite("./text.jpg", img);
+    bitwise_not (mask, mask);
 
     const int range_from  = -5;
     const int range_to    = 5;
@@ -191,6 +167,34 @@ int main( int argc, const char** argv )
 
     cvtColor(fullImageHSV,img, CV_HSV2BGR);
 
+}
+
+
+int main( int argc, const char** argv )
+{
+    string text = "Khuong";
+
+    int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+    double fontScale = 1.0;
+    int thickness = 1;
+    int baseline= 1 ;
+    string fontFaceStr = "Times";//"maszyna";//"Times"; //"Traveling _Typewriter";
+
+    Size textSize = getTextSize(text, fontFace,
+                            fontScale, thickness, &baseline);
+    baseline += thickness;
+    
+
+
+
+    // center the text
+
+    Mat img( textSize.height+ 6,textSize.width - 6, CV_8UC3, Scalar(255,255,255));
+    Mat mask;
+
+
+    createMask(img, mask, textSize, fontFaceStr, text);
+
     // write text to CMT background
 
     Mat img3 = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/048805307.jpg");
@@ -205,16 +209,17 @@ int main( int argc, const char** argv )
 
     Mat crop = img3(roi);
 
-
-    std::cout << crop.rows << "-" << crop.cols << "\n";
     Mat background = crop.clone(); 
-    putTextCairo(crop,text, cv::Point2d(textSize.width/2 - 3, textSize.height/2+ 3), fontFace2, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
+    putTextCairo(crop,text, cv::Point2d(textSize.width/2 - 3, textSize.height/2+ 3), fontFaceStr, 27, Scalar(124/255.0, 125/255.0, 85/255.0), false, false);
    
     resize(crop, crop, Size(), 10,10, INTER_CUBIC);
     resize(crop, crop, Size(), 0.1,0.1, INTER_AREA);
     double alpha = 0.95;
     Mat dst;
     addWeighted(crop, alpha, background, 1.0-alpha, 0.0, dst);
+
+
+
 
     namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with the name "MyWindow"
     img.copyTo(dst,mask);
