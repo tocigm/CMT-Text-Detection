@@ -166,7 +166,6 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
     }
 
     cvtColor(fullImageHSV,img, CV_HSV2BGR);
-
 }
 
 Mat getBackground(Size textSize){
@@ -196,8 +195,17 @@ Size getTextSize(string text){
     
     Size textSize = getTextSize(text, fontFace,
                             fontScale, thickness, &baseline);
-    textSize.width -= 6;
-    textSize.height +=6 ;
+
+
+    std::random_device                  rand_dev;
+    std::mt19937                        generator(rand_dev());
+    std::uniform_int_distribution<int>  distr(3, 8);
+
+
+    textSize.width -= distr(generator);
+
+
+    textSize.height += distr(generator) ;
     baseline += thickness;
     return textSize;
 }
