@@ -5,8 +5,18 @@
 #include <opencv2/imgproc.hpp>
 #include <random>
 
+#include <vector>
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
 using namespace cv;
 using namespace std;
+using std::vector;
+
+string BASE = "/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/";
 
 void putTextCairo(
         cv::Mat &targetImage,
@@ -62,6 +72,22 @@ void putTextCairo(
 
     cairo_destroy(cairo);
     cairo_surface_destroy(surface);
+}
+
+vector<string> globVector(const string& pattern){
+    string STRING;
+    ifstream infile;
+    vector<string> v;
+    infile.open (pattern);
+    cout << pattern << "\n";
+    while(!infile.eof()) // To get you all the lines.
+    {
+        getline(infile,STRING); // Saves the line in STRING.
+        v.push_back(STRING);
+    }
+    infile.close();
+
+    return v;
 }
 
 void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, string text){
@@ -169,17 +195,39 @@ void createMask( Mat & img, Mat & mask, Size textSize, string fontFaceStr, strin
 }
 
 Mat getBackground(Size textSize){
-    Mat bg_mat = imread("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/bg/1_268054807.jpg");
+
+    // globVector("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/bg/");
+    vector<string> backgrounds = globVector(BASE + "/utils/backgrounds.txt");
+
+
+
+    string background;
+    Mat bg_mat;
+
+    std::random_device                  rand_dev;
+    std::mt19937                        generator(rand_dev());
+    std::uniform_int_distribution<int>  distr(0, backgrounds.size());
+
+    do {
+        background = backgrounds.at(distr(generator));
+        bg_mat = imread(background);
+    } while (bg_mat.cols <= textSize.width + 10 ||  bg_mat.rows <= textSize.height + 10);
+
+    cout << background << "\n";
+    cout << bg_mat.cols - textSize.width -10 << "\n";
+    cout << bg_mat.rows - textSize.height -10 << "\n";
     
-    cout << bg_mat.cols <<"---"<< bg_mat.rows<< "\n";
-    cout << textSize.height <<"-+-"<< textSize.width<< "\n";
+    
     Rect roi;
     
     roi.width = textSize.width ;
     roi.height = textSize.height ;
 
-    roi.x = bg_mat.cols - textSize.width -20;
-    roi.y = bg_mat.rows -  textSize.height - 20;
+
+    std::uniform_int_distribution<int>  distrX(3, bg_mat.cols - textSize.width -10);
+    std::uniform_int_distribution<int>  distrY(3, bg_mat.rows -  textSize.height - 10);
+    roi.x = distrX(generator);
+    roi.y = distrY(generator);
 
     cout << roi.x <<"-+-"<<  roi.y << "\n";
 
