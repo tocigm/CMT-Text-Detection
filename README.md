@@ -3,15 +3,4 @@ cd /home/ubuntu/CMT-Text-Detection
 gunicorn -c gunicorn.config.py server.wsgi:app  --pid ./logs/gunicorn.pid --daemon
 
 
-
-
-
-
-## Ver 2
-### Extract the number block
-
-
-### Split the number
-
-
-### Retrain
+g++ `pkg-config --cflags --libs opencv cairo` fake_data/wh.cpp -o a.out && ./a.out
