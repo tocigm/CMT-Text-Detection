@@ -90,6 +90,22 @@ def mainLoop(screen, px):
 
 if __name__ == "__main__":
 
+    # import wx
+    #
+    # app = wx.PySimpleApp()
+    # dialog = wx.MessageDialog(None, 'wxPython is awesome!', 'Dialog Box', wx.OK | wx.ICON_INFORMATION)
+    # dialog.ShowModal()
+    # dialog.Destroy()
+    # app.MainLoop()
+
+    import tkSimpleDialog
+    from Tkinter import Tk, Label
+
+    root = Tk()
+
+
+    # root.mainloop()
+
     PATH = os.path.realpath("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/CMT/")
     OUT = os.path.realpath("/Volumes/Data/WORKSPACE/git/bagiks/CMT-Text-Detection/dataset/crop/")
 
@@ -129,9 +145,15 @@ if __name__ == "__main__":
                         crop = im.crop((left, upper, right, lower))
 
 
-                        output_loc = os.path.join(OUT, str(j) + "_" + fs[i])
-                        j += 1
-                        crop.save(output_loc)
+                        name = tkSimpleDialog.askstring("label", "label")
+
+                        if name is not None:
+                            img_name = fs[i].split(".")
+                            crop_name = img_name[0] + "_"+ name+"."+img_name[1]
+
+                            output_loc = os.path.join(OUT, crop_name)
+                            j += 1
+                            crop.save(output_loc)
 
                 elif event.type ==pygame.KEYDOWN:
                     if event.key == pygame.K_1:
