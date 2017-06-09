@@ -3,8 +3,6 @@ import sys
 from PIL import Image
 import os
 
-
-
 def displayImage(screen, px, topleft, prior):
     # ensure that the rect always has positive width, height
     x, y = topleft
@@ -32,6 +30,8 @@ def displayImage(screen, px, topleft, prior):
     im.set_alpha(128)
     screen.blit(im, (x, y))
     pygame.display.flip()
+    
+    print height
 
     # return current box extents
     return (x, y, width, height)
@@ -70,7 +70,7 @@ def mainLoop(screen, px):
                     im = Image.open(input_loc)
                     im = im.crop((left, upper, right, lower))
 
-                    print(left, upper, right, lower)
+                    #print(left, upper, right, lower)
                     im.save(output_loc)
 
             elif event.type ==pygame.KEYDOWN:
@@ -141,7 +141,7 @@ if __name__ == "__main__":
                             left, right = right, left
                         if lower < upper:
                             lower, upper = upper, lower
-
+                        print(upper - lower, upper, lower)
                         crop = im.crop((left, upper, right, lower))
 
 
@@ -149,15 +149,23 @@ if __name__ == "__main__":
 
                         if name is not None:
                             img_name = fs[i].split(".")
-                            crop_name = img_name[0] + "_"+ name+"."+img_name[1]
 
-                            output_loc = os.path.join(OUT, crop_name)
+                            img_folder = os.path.join(OUT, img_name[0])
+                            if not os.path.exists(img_folder):
+                                os.mkdir(img_folder)
+
+                            output_loc = os.path.join(img_folder, name+"."+img_name[1])
                             j += 1
                             crop.save(output_loc)
 
                 elif event.type ==pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         i += 1
+                        n = 2
+                        pygame.display.quit()
+                        break
+                    if event.key == pygame.K_2:
+                        i -=1
                         n = 2
                         pygame.display.quit()
                         break
