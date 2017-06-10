@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import pygame
-import sys
 from PIL import Image
 import os
 
@@ -110,7 +109,10 @@ if __name__ == "__main__":
                             left, right = right, left
                         if lower < upper:
                             lower, upper = upper, lower
-                        lower = upper + 31
+                            upper = lower - 31
+                        else:
+                            lower = upper + 31
+
                         print(upper - lower, upper, lower)
                         crop = im.crop((left, upper, right, lower))
 
