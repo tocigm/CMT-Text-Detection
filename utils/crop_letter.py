@@ -46,14 +46,15 @@ def setup(path):
 def reload(folder):
     letters = {}
     for  f in os.listdir(folder):
-        letter = f.split(".")[0].split("_")
-        print letter, f.split(".")
-        if letter[0] in letters:
-            if int(letter[1])> letters[letter[0]]:
-                letters[letter[0]]  = int(letter[1])
-        else:
-            letters[letter[0]] = int (letter[1])
-        print letters
+        if not os.path.isdir(os.path.join(folder, f)):
+            letter = f.split(".")[0].split("_")
+            print letter, f.split(".")
+            if letter[0] in letters:
+                if int(letter[1]) > letters[letter[0]]:
+                    letters[letter[0]]  = int(letter[1])
+            else:
+                letters[letter[0]] = int (letter[1])
+            print letters
     return letters
 
 if __name__ == "__main__":
